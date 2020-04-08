@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="3fd52a86-38e0-4842-9ddb-ab43ef12edf7" >
+		<email:smtp-connection host="${email.host}" port="${email.port}" user="${email.username}" password="${email.password}" />
+	</email:smtp-config>
+	<flow name="pf-error-email-notification" doc:id="77babaa7-fb29-4803-8f8b-52360dfc82b4" >
+		<logger level="INFO" doc:name="pf-error-email-notification flow started" doc:id="91e54172-eb5b-4912-9246-7b44d1a32246" message="pf-error-email-notification flow started"/>
+		<set-payload value="#[&quot;Hello,\n&quot; ++ &quot;You are receiving this alert because:\n&quot; ++ &quot;The application   &quot; ++ p('app.name') ++ &quot;  in &quot;++ p('mule.env') ++  &quot;  has a new error notification:\n&quot; ++ &quot;Error Message:&quot; ++ payload.error_message ++ &quot;\n&quot; ++ &quot;Correlation Id:&quot; ++ payload.correlation_id  ++ &quot;\n&quot; ++ &quot;Error Cause:&quot; ++ payload.error_code ++ &quot;\n&quot; ++ &quot;Timestamp:&quot; ++ now() ++ &quot;\n&quot;]" doc:name="Set Email Body" doc:id="9b1a2399-85cc-4749-9909-14661e7c9d11" mimeType="application/java"/>
+		<email:send doc:id="8dac3209-f240-4ab1-9f60-08f0e5424afd" doc:name="Send Email Notification" config-ref="Email_SMTP" toAddresses="${email.to.addresses}" fromAddress="${email.from.address}" subject="${email.subject}">
+			<email:body contentType="text/plain" />
+		</email:send>
+		<logger level="INFO" doc:name="pf-error-email-notification flow ended" doc:id="7314e65c-60a5-4d86-891f-753a32a816b8" message="pf-error-email-notification flow ended"/>
+	</flow>
+</mule>

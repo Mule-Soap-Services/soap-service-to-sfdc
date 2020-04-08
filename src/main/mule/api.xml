@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit-soap="http://www.mulesoft.org/schema/mule/apikit-soap" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/mule/apikit-soap/current/mule-apikit-soap.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+    <http:listener-config name="api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081"/>
+    </http:listener-config>
+    <apikit-soap:config name="soapkit-config" wsdlLocation="api\SampleWebService.wsdl" service="JenneWebService" port="JenneWebServiceSoap12"/>
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="478cc4a1-601d-4bcc-a839-92ce401c5d2a" >
+		<http:listener-connection host="0.0.0.0" port="8085" />
+	</http:listener-config>
+	<flow name="api-main">
+        <http:listener config-ref="api-httpListenerConfig" path="/JenneWebService/JenneWebServiceSoap" outputMimeType="application/xml">
+            <http:response statusCode="#[attributes.protocolHeaders.httpStatus default 200]">
+                <http:headers><![CDATA[#[attributes.protocolHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[attributes.protocolHeaders.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[attributes.protocolHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit-soap:router config-ref="soapkit-config">
+            <apikit-soap:message>#[payload]</apikit-soap:message>
+            <apikit-soap:attributes>#[
+              %dw 2.0
+              output application/java
+              ---
+              {
+                  headers: attributes.headers,
+                  method: attributes.method,
+                  queryString: attributes.queryString
+            }]</apikit-soap:attributes>
+        </apikit-soap:router>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f298103b-c0b6-4814-8d4d-3d2c20f3c374" type="APIKIT-SOAP:FAULT">
+				<ee:transform doc:name="DW SET APIKIT-SOAP:FAULT" doc:id="9de134db-0331-4715-9708-dede65a7f29f" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"error_code": "APIKIT-SOAP:FAULT",
+	"correlation_id": correlationId,
+	"error_message": error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<flow-ref doc:name="pf-error-email-notification" doc:id="4ef645d3-25b1-425b-8e65-8bf7c94f4c2b" name="pf-error-email-notification"/>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="9f0568d8-c6ce-4dc3-ac2e-29922518cc09" type="APIKIT-SOAP:ROUTER">
+				<ee:transform doc:name="DW SET APIKIT-SOAP:ROUTER" doc:id="a135bb74-9cd5-4326-97e9-b6cb77321d21" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"error_code": "APIKIT-SOAP:ROUTER",
+	"correlation_id": correlationId,
+	"error_message": error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<flow-ref doc:name="pf-error-email-notification" doc:id="f72d84c6-1a6f-45a2-9d46-007abbdbd461" name="pf-error-email-notification"/>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="57b50fc2-f642-434b-b5a6-1a51c86ef638" type="EXPRESSION">
+				<ee:transform doc:name="DW SET EXPRESSION" doc:id="a1bcfd01-7f75-4c66-af10-b6be8d12cb38" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"error_code": "EXPRESSION",
+	"correlation_id": correlationId,
+	"error_message": error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<flow-ref doc:name="pf-error-email-notification" doc:id="92580924-80fc-4b5b-aff3-ea3d85477afd" name="pf-error-email-notification"/>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="0aaeacc2-f3a1-4642-ab44-25712fc69f50" type="STREAM_MAXIMUM_SIZE_EXCEEDED">
+				<ee:transform doc:name="DW SET STREAM_MAXIMUM_SIZE_EXCEEDED" doc:id="83290249-5d18-45fc-b2f7-8fdf7b4fea19" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"error_code": "STREAM_MAXIMUM_SIZE_EXCEEDED",
+	"correlation_id": correlationId,
+	"error_message": error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<flow-ref doc:name="pf-error-email-notification" doc:id="a9bc275f-40ed-45b6-9626-8242b32f0244" name="pf-error-email-notification"/>
+			</on-error-propagate>
+		</error-handler>
+    </flow>
+    <flow name="EnterOrder_v5:\soapkit-config">
+        <logger level="INFO" doc:name="Enter Order Flow Started" doc:id="08b15e73-a9e7-41e7-9428-cd1fb8e37c42" message="Enter Order Flow Started"/>
+		
+		<flow-ref doc:name="mf-enter-order-implementation" doc:id="bfca91f3-2b03-40a4-8021-413650370b01" name="mf-enter-order-implementation"/>
+		<logger level="INFO" doc:name="Enter Order Flow Ended" doc:id="ccc70e82-2c0d-465a-b566-f789b945c699" message="Enter Order Flow Ended"/>
+    </flow>
+    <flow name="GetQuote_v3:\soapkit-config">
+        <logger level="INFO" doc:name="Get Quote Flow Started" doc:id="859e4432-30df-4948-9299-56f42162f416" message="Get Quote Flow Started"/>
+		
+		<flow-ref doc:name="mf-get-quote-implementation" doc:id="c2546912-5f95-4725-825f-e96896949c7d" name="mf-get-quote-implementation"/>
+		<logger level="INFO" doc:name="Get Quote Flow Ended" doc:id="dcc33577-2f41-4747-8be0-de3dfcde4639" message="Get Quote Flow Ended" />
+    </flow>
+    <flow name="AdvanceShipNoticeGet_v2:\soapkit-config">
+        <logger level="INFO" doc:name="Get Advance ShipNotice Flow Started" doc:id="26f21acd-b28a-4520-aa59-0cd44bd6f419" message="Get Advance ShipNotice Flow Started"/>
+		
+		<flow-ref doc:name="mf-get-advance-ship-notice-implementation" doc:id="ac703fa8-3d4f-4534-b92f-e1b678ced542" name="mf-get-advance-ship-notice-implementation"/>
+		<logger level="INFO" doc:name="Get Advance ShipNotice Flow Ended" doc:id="7f551f9a-7bed-44fd-a76c-e87eca066f42" message="Get Advance ShipNotice Flow Ended"/>
+    </flow>
+	
+</mule>

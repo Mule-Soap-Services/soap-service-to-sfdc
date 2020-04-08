@@ -1,0 +1,3323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://WebService.jenne.com" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://WebService.jenne.com" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://WebService.jenne.com">
+      <s:element name="EnterOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="quoteNumber" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="paymentMethod" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="creditCardId" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shippingSpecialInstr" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EnterOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnterOrderResult" type="tns:OrderResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OrderResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Error">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ErrorNumber" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ErrorDescription" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="EnterOrder_v2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="quoteNumber" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="paymentMethod" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="creditCardId" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shippingSpecialInstr" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="backorderFlag" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EnterOrder_v2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnterOrder_v2Result" type="tns:OrderResponseV2"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OrderResponseV2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="backorderedItems" type="tns:ArrayOfOrderItem"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfOrderItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OrderItem" type="tns:OrderItem"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OrderItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNo" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:int"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="EnterOrder_v3">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="quoteNumber" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCompany" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserAddress1" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserAddress2" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCity" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserState" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserPostalCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCountry" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserPhone" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="paymentMethod" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="creditCardId" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shippingSpecialInstr" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="backorderFlag" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EnterOrder_v3Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnterOrder_v3Result" type="tns:OrderResponseV3"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OrderResponseV3">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="backorderedItems" type="tns:ArrayOfOrderItem"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="EnterOrder_v4">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="quoteNumber" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCompany" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserAddress1" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserAddress2" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCity" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserState" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserPostalCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCountry" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserPhone" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="paymentMethod" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="creditCardId" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shippingSpecialInstr" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="backorderFlag" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="buyer" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EnterOrder_v4Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnterOrder_v4Result" type="tns:OrderResponseV4"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OrderResponseV4">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="backorderedItems" type="tns:ArrayOfOrderItem"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="EnterOrder_v5">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="quoteNumber" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCompany" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserAddress1" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserAddress2" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCity" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserState" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserPostalCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCountry" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserPhone" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="paymentMethod" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="creditCardId" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shippingSpecialInstr" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="backorderFlag" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="buyer" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserEmail" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserPoNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="resellerAssignedCustomerId" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToEmail" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EnterOrder_v5Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnterOrder_v5Result" type="tns:OrderResponseV4"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetQuote">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="carrierCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcSaturday" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcInsurance" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcHoldAtLoc" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcInside" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcLiftgate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcPod" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcPodAdult" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToName" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToAddress1" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToAddress2" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToCity" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToState" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToCountry" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToPhone" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToContact" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToPostalCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipAddressType" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipSpecialInstructions" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="freightType" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="freightAccountNo" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="vcpId" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="items" type="tns:ArrayOfOrderItem"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetQuoteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetQuoteResult" type="tns:QuoteResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="QuoteResponse">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteNumber" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteSubtotal" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CarrierCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcSaturday" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcInsurance" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcHoldAtLoc" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcInside" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcLiftgate" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcPod" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcPodAdult" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="freightType" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="freightAccountNo" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Freight" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteTotal" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderedLines" type="tns:ArrayOfOrderedLine"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfOrderedLine">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OrderedLine" type="tns:OrderedLine"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OrderedLine">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LineNumber" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuantityOrdered" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuantityAvailable" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SPFlag" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UOM" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitPrice" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ExtendedPrice" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetQuote_v2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="specialBid" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="carrierCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcSaturday" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcInsurance" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcHoldAtLoc" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcInside" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcLiftgate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcPod" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcPodAdult" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToName" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToAddress1" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToAddress2" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToCity" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToState" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToCountry" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToPhone" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToContact" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToPostalCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipAddressType" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipSpecialInstructions" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="freightType" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="freightAccountNo" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="vcpId" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="items" type="tns:ArrayOfOrderItem"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetQuote_v2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetQuote_v2Result" type="tns:QuoteResponseV2"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="QuoteResponseV2">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteNumber" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteSubtotal" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CarrierCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcSaturday" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcInsurance" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcHoldAtLoc" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcInside" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcLiftgate" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcPod" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcPodAdult" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="freightType" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="freightAccountNo" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Freight" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteTotal" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderedLines" type="tns:ArrayOfOrderedLineV2"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfOrderedLineV2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OrderedLineV2" type="tns:OrderedLineV2"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OrderedLineV2">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LineNumber" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuantityOrdered" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuantityAvailable" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SPFlag" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UOM" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartMessage" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitPrice" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ExtendedPrice" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetQuote_v3">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="specialBid" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="carrierCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcSaturday" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcInsurance" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcHoldAtLoc" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcInside" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcLiftgate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcPod" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcPodAdult" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToName" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToAddress1" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToAddress2" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToCity" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToState" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToCountry" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToPhone" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToContact" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToPostalCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipAddressType" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipSpecialInstructions" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="freightType" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="freightAccountNo" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="vcpId" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="items" type="tns:ArrayOfOrderItem"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetQuote_v3Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetQuote_v3Result" type="tns:QuoteResponseV3"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="QuoteResponseV3">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteNumber" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteSubtotal" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CarrierCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcSaturday" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcInsurance" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcHoldAtLoc" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcInside" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcLiftgate" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcPod" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcPodAdult" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="freightType" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="freightAccountNo" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Freight" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteTotal" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderedLines" type="tns:ArrayOfOrderedLineV2"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreateQuote">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="quoteName" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="specialBid" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="items" type="tns:ArrayOfOrderItem"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateQuoteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CreateQuoteResult" type="tns:CreateQuoteResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CreateQuoteResponse">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteNumber" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteTotal" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderedLines" type="tns:ArrayOfOrderedLineV2"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ConvertQuoteToOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="quoteNumber" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="carrierCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcSaturday" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcInsurance" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcHoldAtLoc" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcInside" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcLiftgate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcPod" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="svcPodAdult" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToName" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToAddress1" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToAddress2" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToCity" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToState" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToCountry" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToPhone" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToContact" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipToPostalCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shipAddressType" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="shippingSpecialInstr" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="freightType" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="freightAccountNo" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="paymentMethod" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="creditCardId" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCompany" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserAddress1" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserAddress2" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCity" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserState" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserPostalCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserCountry" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endUserPhone" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="vcpId" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="backorderFlag" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="buyer" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConvertQuoteToOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ConvertQuoteToOrderResult" type="tns:ConvertQuoteResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ConvertQuoteResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="BackorderedItems" type="tns:ArrayOfOrderItem"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderSubtotal" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CarrierCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcSaturday" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcInsurance" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcHoldAtLoc" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcInside" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcLiftgate" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcPod" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SvcPodAdult" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="FreightType" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="FreightAccountNo" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Freight" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderTotal" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderedLines" type="tns:ArrayOfOrderedLineV2"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVendors">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVendorsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetVendorsResult" type="tns:VendorResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="VendorResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Vendors" type="tns:ArrayOfVendor"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfVendor">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Vendor" type="tns:Vendor"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Vendor">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="VendorCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="VendorName" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPriceAvailability">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="productList" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPriceAvailabilityResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetPriceAvailabilityResult" type="tns:PriceAvailabilityResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PriceAvailabilityResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PriceAvailabilities" type="tns:ArrayOfPriceAvailability"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPriceAvailability">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PriceAvailability" type="tns:PriceAvailability"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PriceAvailability">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Price" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UOM" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AvailableQuantity" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SPFlag" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPriceAvailability_v2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="productList" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPriceAvailability_v2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetPriceAvailability_v2Result" type="tns:PriceAvailabilityResponseV2"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PriceAvailabilityResponseV2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PriceAvailabilities" type="tns:ArrayOfPriceAvailabilityV2"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPriceAvailabilityV2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PriceAvailabilityV2" type="tns:PriceAvailabilityV2"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PriceAvailabilityV2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Price" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UOM" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AvailableQuantity" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SPFlag" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Authorization" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Listprice" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="MAPprice" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LicenseTermDescription" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LicenseTerm" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LicenseTermInterval" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="NonPhysical" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPartTypes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPartTypesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetPartTypesResult" type="tns:PartTypesResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PartTypesResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Types" type="tns:ArrayOfPartType"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPartType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PartType" type="tns:PartType"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PartType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartTypeCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartTypeName" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetShippers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetShippersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetShippersResult" type="tns:ShippersResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ShippersResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Shippers" type="tns:ArrayOfShipper"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfShipper">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Shipper" type="tns:Shipper"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Shipper">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipperCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipperName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Default" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCustomerCreditCards">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerCreditCardsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetCustomerCreditCardsResult" type="tns:CreditCardsResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CreditCardsResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CreditCards" type="tns:ArrayOfCreditCard"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCreditCard">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CreditCard" type="tns:CreditCard"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CreditCard">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="MaskedNo" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DefaultCard" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CardId" type="s:int"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="FindProducts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="vendorCd" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="typeCd" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="findString" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="pageSize" type="s:int"/>
+            <s:element minOccurs="1" maxOccurs="1" name="page" type="s:int"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindProductsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="FindProductsResult" type="tns:ProductsResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProductsResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Products" type="tns:ArrayOfProduct"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfProduct">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Product" type="tns:Product"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Product">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartDescription" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Weight" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UOM" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Availability" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="MSRP" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="VendorName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartType" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SPFlag" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AvailableQuantity" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Price" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ItemCount" type="s:int"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetProductDetail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="partNumber" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProductDetailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetProductDetailResult" type="tns:ProductDetailResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProductDetailResponse">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ProductDetail" type="tns:ProductDetail"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ProductDetail">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="VendorName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ExtendedDescription" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SPFlag" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AvailableQuantity" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Weight" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UOM" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="MSRP" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitPrice" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ImageURL" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SpecificationsURL" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetOrderHistory">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="startDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endDate" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="pageSize" type="s:int"/>
+            <s:element minOccurs="1" maxOccurs="1" name="page" type="s:int"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOrderHistoryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetOrderHistoryResult" type="tns:OrderHistoryResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OrderHistoryResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderHistories" type="tns:ArrayOfOrderHistory"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfOrderHistory">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OrderHistory" type="tns:OrderHistory"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OrderHistory">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="InvoiceNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InvoiceDate" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderDate" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PONumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderStatus" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderType" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderAmount" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="TaxAmount" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="FreightAmount" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="InvoiceAmount" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TermsCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipVia" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DateShipped" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TrackingNumbers" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NumRecords" type="s:int"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetInvoices">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="startDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endDate" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvoicesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetInvoicesResult" type="tns:InvoicesResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InvoicesResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Invoices" type="tns:ArrayOfInvoice"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfInvoice">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Invoice" type="tns:Invoice"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Invoice">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="InvoiceNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderDate" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PONumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderStatus" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DateShipped" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderAmount" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="TaxAmount" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="FreightAmount" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="InvoiceAmount" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TermsCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="BillingName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="BillingAddress" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShippingName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShippingAddress" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShippingInstructions" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipVia" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Dateshipped" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TrackingNumbers" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InvoiceLines" type="tns:ArrayOfInvoiceLine"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfInvoiceLine">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="InvoiceLine" type="tns:InvoiceLine"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="InvoiceLine">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderLineNumber" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartDescription" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitPrice" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuantityOrdered" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuantityShipped" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UOM" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SerialNumbers" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetInvoices_v2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="startDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endDate" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvoices_v2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetInvoices_v2Result" type="tns:InvoicesResponseV2"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InvoicesResponseV2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Invoices" type="tns:ArrayOfInvoiceV2"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfInvoiceV2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="InvoiceV2" type="tns:InvoiceV2"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="InvoiceV2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="InvoiceNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderDate" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PONumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderStatus" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DateShipped" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderAmount" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="TaxAmount" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="FreightAmount" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="InvoiceAmount" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TermsCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="BillingName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="BillingAddress" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShippingName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShippingAddress" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShippingInstructions" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipVia" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TrackingNumbers" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InvoiceLines" type="tns:ArrayOfInvoiceLineV2"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfInvoiceLineV2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="InvoiceLineV2" type="tns:InvoiceLineV2"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="InvoiceLineV2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderLineNumber" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartDescription" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitPrice" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitPriceDiscounted" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Discount" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuantityOrdered" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuantityShipped" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UOM" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SerialNumbers" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ExtendedPrice" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetBackorders">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBackordersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetBackordersResult" type="tns:BackorderResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="BackorderResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="BackorderLines" type="tns:ArrayOfBackorderOrderLine"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfBackorderOrderLine">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BackorderOrderLine" type="tns:BackorderOrderLine"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BackorderOrderLine">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderNo" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderExt" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LineNo" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartType" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QtyOrdered" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QtyAllocated" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="TotalOrderAmt" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderDate" type="s:dateTime"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetBackordersToShip">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBackordersToShipResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetBackordersToShipResult" type="tns:BackorderToShipResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="BackorderToShipResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="BackorderLines" type="tns:ArrayOfBackorderOrderLine"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AdvanceShipNoticeGet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="startDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endDate" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AdvanceShipNoticeGetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AdvanceShipNoticeGetResult" type="tns:AdvanceShipNoticeResponse"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AdvanceShipNoticeResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AdvanceShipNotices" type="tns:ArrayOfAdvanceShipNotice"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAdvanceShipNotice">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AdvanceShipNotice" nillable="true" type="tns:AdvanceShipNotice"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AdvanceShipNotice">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PONumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderDate" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DateShipped" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="BillingName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToAddress1" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToAddress2" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToCity" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToState" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToZip" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToCountry" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToContact" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToPhone" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShippingInstructions" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ASNcartons" type="tns:ArrayOfASNcarton"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfASNcarton">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ASNcarton" nillable="true" type="tns:ASNcarton"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ASNcarton">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CartonNo" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipVia" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TrackingNo" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DateShipped" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ASNcartonDetails" type="tns:ArrayOfASNcartonDetail"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfASNcartonDetail">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ASNcartonDetail" nillable="true" type="tns:ASNcartonDetail"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ASNcartonDetail">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderLineNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="QtyShipped" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SerialNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="MACaddress" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="kitPartNo" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AdvanceShipNoticeGet_v2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="poNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="orderNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="startDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="endDate" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AdvanceShipNoticeGet_v2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AdvanceShipNoticeGet_v2Result" type="tns:AdvanceShipNoticeResponse_v2"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AdvanceShipNoticeResponse_v2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AdvanceShipNotices" type="tns:ArrayOfAdvanceShipNotice_v2"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAdvanceShipNotice_v2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AdvanceShipNotice_v2" nillable="true" type="tns:AdvanceShipNotice_v2"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AdvanceShipNotice_v2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PONumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderDate" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DateShipped" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="BillingName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToAddress1" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToAddress2" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToCity" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToState" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToZip" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToCountry" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToContact" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToPhone" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShippingInstructions" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="EndUserPONumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ResellerAssignedCustomerId" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="StoreFrontOrderNo" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipToEmail" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ASNcartons" type="tns:ArrayOfASNcarton_v2"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfASNcarton_v2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ASNcarton_v2" nillable="true" type="tns:ASNcarton_v2"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ASNcarton_v2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CartonNo" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ShipVia" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TrackingNo" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DateShipped" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ASNcartonDetails" type="tns:ArrayOfASNcartonDetail_v2"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfASNcartonDetail_v2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ASNcartonDetail_v2" nillable="true" type="tns:ASNcartonDetail_v2"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ASNcartonDetail_v2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderLineNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="QtyShipped" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SerialNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="MACaddress" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="kitPartNo" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="VendorCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Vendor" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UniqueLineId" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RMAValidMACCheck">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="mac" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RMAValidMACCheckResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RMAValidMACAddresses" nillable="true" type="tns:RMAValidMACAddresses"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RMAValidMACAddresses">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="MACAddresses" type="tns:ArrayOfMACAddress"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfMACAddress">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MACAddress" nillable="true" type="tns:MACAddress"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MACAddress">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerPo" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrderDate" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ResellerAssignedCustomerId" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RMACreate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="Address" type="tns:RMACreateAddress"/>
+            <s:element minOccurs="0" maxOccurs="1" name="Parts" type="tns:ArrayOfRMAPart"/>
+            <s:element minOccurs="0" maxOccurs="1" name="AdvancedReplacement" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RMACreateAddress">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Address1" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Address2" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Zip" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRMAPart">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RMAPart" nillable="true" type="tns:RMAPart"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RMAPart">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="MACAddresses" type="tns:ArrayOfString"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MACAddress" nillable="true" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RMACreateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RMACreateResult" type="tns:RMACreate"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RMACreate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Credits" type="tns:ArrayOfCredit"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="tns:Error"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCredit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Credit" nillable="true" type="tns:Credit"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Credit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TransactionNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OriginalOrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CreditNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="AdvancedReplacementOrderNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="OrderResponse" type="tns:OrderResponse"/>
+      <s:element name="OrderResponseV2" type="tns:OrderResponseV2"/>
+      <s:element name="OrderResponseV3" type="tns:OrderResponseV3"/>
+      <s:element name="OrderResponseV4" type="tns:OrderResponseV4"/>
+      <s:element name="ConvertQuoteResponse" type="tns:ConvertQuoteResponse"/>
+      <s:element name="VendorResponse" type="tns:VendorResponse"/>
+      <s:element name="PriceAvailabilityResponse" type="tns:PriceAvailabilityResponse"/>
+      <s:element name="PriceAvailabilityResponseV2" type="tns:PriceAvailabilityResponseV2"/>
+      <s:element name="PartTypesResponse" type="tns:PartTypesResponse"/>
+      <s:element name="ShippersResponse" type="tns:ShippersResponse"/>
+      <s:element name="CreditCardsResponse" type="tns:CreditCardsResponse"/>
+      <s:element name="ProductsResponse" type="tns:ProductsResponse"/>
+      <s:element name="ProductDetailResponse" type="tns:ProductDetailResponse"/>
+      <s:element name="OrderHistoryResponse" type="tns:OrderHistoryResponse"/>
+      <s:element name="InvoicesResponse" type="tns:InvoicesResponse"/>
+      <s:element name="InvoicesResponseV2" type="tns:InvoicesResponseV2"/>
+      <s:element name="BackorderResponse" type="tns:BackorderResponse"/>
+      <s:element name="BackorderToShipResponse" type="tns:BackorderToShipResponse"/>
+      <s:element name="AdvanceShipNoticeResponse" nillable="true" type="tns:AdvanceShipNoticeResponse"/>
+      <s:element name="AdvanceShipNoticeResponse_v2" nillable="true" type="tns:AdvanceShipNoticeResponse_v2"/>
+      <s:element name="RMAValidMACAddresses" nillable="true" type="tns:RMAValidMACAddresses"/>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="EnterOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:EnterOrder"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:EnterOrderResponse"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v2SoapIn">
+    <wsdl:part name="parameters" element="tns:EnterOrder_v2"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v2SoapOut">
+    <wsdl:part name="parameters" element="tns:EnterOrder_v2Response"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v3SoapIn">
+    <wsdl:part name="parameters" element="tns:EnterOrder_v3"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v3SoapOut">
+    <wsdl:part name="parameters" element="tns:EnterOrder_v3Response"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v4SoapIn">
+    <wsdl:part name="parameters" element="tns:EnterOrder_v4"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v4SoapOut">
+    <wsdl:part name="parameters" element="tns:EnterOrder_v4Response"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v5SoapIn">
+    <wsdl:part name="parameters" element="tns:EnterOrder_v5"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v5SoapOut">
+    <wsdl:part name="parameters" element="tns:EnterOrder_v5Response"/>
+  </wsdl:message>
+  <wsdl:message name="GetQuoteSoapIn">
+    <wsdl:part name="parameters" element="tns:GetQuote"/>
+  </wsdl:message>
+  <wsdl:message name="GetQuoteSoapOut">
+    <wsdl:part name="parameters" element="tns:GetQuoteResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetQuote_v2SoapIn">
+    <wsdl:part name="parameters" element="tns:GetQuote_v2"/>
+  </wsdl:message>
+  <wsdl:message name="GetQuote_v2SoapOut">
+    <wsdl:part name="parameters" element="tns:GetQuote_v2Response"/>
+  </wsdl:message>
+  <wsdl:message name="GetQuote_v3SoapIn">
+    <wsdl:part name="parameters" element="tns:GetQuote_v3"/>
+  </wsdl:message>
+  <wsdl:message name="GetQuote_v3SoapOut">
+    <wsdl:part name="parameters" element="tns:GetQuote_v3Response"/>
+  </wsdl:message>
+  <wsdl:message name="CreateQuoteSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateQuote"/>
+  </wsdl:message>
+  <wsdl:message name="CreateQuoteSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateQuoteResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ConvertQuoteToOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:ConvertQuoteToOrder"/>
+  </wsdl:message>
+  <wsdl:message name="ConvertQuoteToOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:ConvertQuoteToOrderResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetVendorsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVendors"/>
+  </wsdl:message>
+  <wsdl:message name="GetVendorsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVendorsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailabilitySoapIn">
+    <wsdl:part name="parameters" element="tns:GetPriceAvailability"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailabilitySoapOut">
+    <wsdl:part name="parameters" element="tns:GetPriceAvailabilityResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailability_v2SoapIn">
+    <wsdl:part name="parameters" element="tns:GetPriceAvailability_v2"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailability_v2SoapOut">
+    <wsdl:part name="parameters" element="tns:GetPriceAvailability_v2Response"/>
+  </wsdl:message>
+  <wsdl:message name="GetPartTypesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPartTypes"/>
+  </wsdl:message>
+  <wsdl:message name="GetPartTypesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPartTypesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetShippersSoapIn">
+    <wsdl:part name="parameters" element="tns:GetShippers"/>
+  </wsdl:message>
+  <wsdl:message name="GetShippersSoapOut">
+    <wsdl:part name="parameters" element="tns:GetShippersResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetCustomerCreditCardsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCustomerCreditCards"/>
+  </wsdl:message>
+  <wsdl:message name="GetCustomerCreditCardsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCustomerCreditCardsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="FindProductsSoapIn">
+    <wsdl:part name="parameters" element="tns:FindProducts"/>
+  </wsdl:message>
+  <wsdl:message name="FindProductsSoapOut">
+    <wsdl:part name="parameters" element="tns:FindProductsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetProductDetailSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProductDetail"/>
+  </wsdl:message>
+  <wsdl:message name="GetProductDetailSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProductDetailResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetOrderHistorySoapIn">
+    <wsdl:part name="parameters" element="tns:GetOrderHistory"/>
+  </wsdl:message>
+  <wsdl:message name="GetOrderHistorySoapOut">
+    <wsdl:part name="parameters" element="tns:GetOrderHistoryResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoicesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInvoices"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoicesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInvoicesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoices_v2SoapIn">
+    <wsdl:part name="parameters" element="tns:GetInvoices_v2"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoices_v2SoapOut">
+    <wsdl:part name="parameters" element="tns:GetInvoices_v2Response"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBackorders"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBackordersResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersToShipSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBackordersToShip"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersToShipSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBackordersToShipResponse"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGetSoapIn">
+    <wsdl:part name="parameters" element="tns:AdvanceShipNoticeGet"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGetSoapOut">
+    <wsdl:part name="parameters" element="tns:AdvanceShipNoticeGetResponse"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGet_v2SoapIn">
+    <wsdl:part name="parameters" element="tns:AdvanceShipNoticeGet_v2"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGet_v2SoapOut">
+    <wsdl:part name="parameters" element="tns:AdvanceShipNoticeGet_v2Response"/>
+  </wsdl:message>
+  <wsdl:message name="RMAValidMACCheckSoapIn">
+    <wsdl:part name="parameters" element="tns:RMAValidMACCheck"/>
+  </wsdl:message>
+  <wsdl:message name="RMAValidMACCheckSoapOut">
+    <wsdl:part name="parameters" element="tns:RMAValidMACCheckResponse"/>
+  </wsdl:message>
+  <wsdl:message name="RMACreateSoapIn">
+    <wsdl:part name="parameters" element="tns:RMACreate"/>
+  </wsdl:message>
+  <wsdl:message name="RMACreateSoapOut">
+    <wsdl:part name="parameters" element="tns:RMACreateResponse"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrderHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrderHttpGetOut">
+    <wsdl:part name="Body" element="tns:OrderResponse"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v2HttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+    <wsdl:part name="backorderFlag" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v2HttpGetOut">
+    <wsdl:part name="Body" element="tns:OrderResponseV2"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v3HttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="endUserCompany" type="s:string"/>
+    <wsdl:part name="endUserAddress1" type="s:string"/>
+    <wsdl:part name="endUserAddress2" type="s:string"/>
+    <wsdl:part name="endUserCity" type="s:string"/>
+    <wsdl:part name="endUserState" type="s:string"/>
+    <wsdl:part name="endUserPostalCode" type="s:string"/>
+    <wsdl:part name="endUserCountry" type="s:string"/>
+    <wsdl:part name="endUserPhone" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+    <wsdl:part name="backorderFlag" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v3HttpGetOut">
+    <wsdl:part name="Body" element="tns:OrderResponseV3"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v4HttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="endUserCompany" type="s:string"/>
+    <wsdl:part name="endUserAddress1" type="s:string"/>
+    <wsdl:part name="endUserAddress2" type="s:string"/>
+    <wsdl:part name="endUserCity" type="s:string"/>
+    <wsdl:part name="endUserState" type="s:string"/>
+    <wsdl:part name="endUserPostalCode" type="s:string"/>
+    <wsdl:part name="endUserCountry" type="s:string"/>
+    <wsdl:part name="endUserPhone" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+    <wsdl:part name="backorderFlag" type="s:string"/>
+    <wsdl:part name="buyer" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v4HttpGetOut">
+    <wsdl:part name="Body" element="tns:OrderResponseV4"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v5HttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="endUserCompany" type="s:string"/>
+    <wsdl:part name="endUserAddress1" type="s:string"/>
+    <wsdl:part name="endUserAddress2" type="s:string"/>
+    <wsdl:part name="endUserCity" type="s:string"/>
+    <wsdl:part name="endUserState" type="s:string"/>
+    <wsdl:part name="endUserPostalCode" type="s:string"/>
+    <wsdl:part name="endUserCountry" type="s:string"/>
+    <wsdl:part name="endUserPhone" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+    <wsdl:part name="backorderFlag" type="s:string"/>
+    <wsdl:part name="buyer" type="s:string"/>
+    <wsdl:part name="endUserEmail" type="s:string"/>
+    <wsdl:part name="endUserPoNumber" type="s:string"/>
+    <wsdl:part name="resellerAssignedCustomerId" type="s:string"/>
+    <wsdl:part name="shipToEmail" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v5HttpGetOut">
+    <wsdl:part name="Body" element="tns:OrderResponseV4"/>
+  </wsdl:message>
+  <wsdl:message name="ConvertQuoteToOrderHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="carrierCode" type="s:string"/>
+    <wsdl:part name="svcSaturday" type="s:string"/>
+    <wsdl:part name="svcInsurance" type="s:string"/>
+    <wsdl:part name="svcHoldAtLoc" type="s:string"/>
+    <wsdl:part name="svcInside" type="s:string"/>
+    <wsdl:part name="svcLiftgate" type="s:string"/>
+    <wsdl:part name="svcPod" type="s:string"/>
+    <wsdl:part name="svcPodAdult" type="s:string"/>
+    <wsdl:part name="shipToName" type="s:string"/>
+    <wsdl:part name="shipToAddress1" type="s:string"/>
+    <wsdl:part name="shipToAddress2" type="s:string"/>
+    <wsdl:part name="shipToCity" type="s:string"/>
+    <wsdl:part name="shipToState" type="s:string"/>
+    <wsdl:part name="shipToCountry" type="s:string"/>
+    <wsdl:part name="shipToPhone" type="s:string"/>
+    <wsdl:part name="shipToContact" type="s:string"/>
+    <wsdl:part name="shipToPostalCode" type="s:string"/>
+    <wsdl:part name="shipAddressType" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+    <wsdl:part name="freightType" type="s:string"/>
+    <wsdl:part name="freightAccountNo" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="endUserCompany" type="s:string"/>
+    <wsdl:part name="endUserAddress1" type="s:string"/>
+    <wsdl:part name="endUserAddress2" type="s:string"/>
+    <wsdl:part name="endUserCity" type="s:string"/>
+    <wsdl:part name="endUserState" type="s:string"/>
+    <wsdl:part name="endUserPostalCode" type="s:string"/>
+    <wsdl:part name="endUserCountry" type="s:string"/>
+    <wsdl:part name="endUserPhone" type="s:string"/>
+    <wsdl:part name="vcpId" type="s:string"/>
+    <wsdl:part name="backorderFlag" type="s:string"/>
+    <wsdl:part name="buyer" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="ConvertQuoteToOrderHttpGetOut">
+    <wsdl:part name="Body" element="tns:ConvertQuoteResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetVendorsHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetVendorsHttpGetOut">
+    <wsdl:part name="Body" element="tns:VendorResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailabilityHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="productList" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailabilityHttpGetOut">
+    <wsdl:part name="Body" element="tns:PriceAvailabilityResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailability_v2HttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="productList" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailability_v2HttpGetOut">
+    <wsdl:part name="Body" element="tns:PriceAvailabilityResponseV2"/>
+  </wsdl:message>
+  <wsdl:message name="GetPartTypesHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetPartTypesHttpGetOut">
+    <wsdl:part name="Body" element="tns:PartTypesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetShippersHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetShippersHttpGetOut">
+    <wsdl:part name="Body" element="tns:ShippersResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetCustomerCreditCardsHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetCustomerCreditCardsHttpGetOut">
+    <wsdl:part name="Body" element="tns:CreditCardsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="FindProductsHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="vendorCd" type="s:string"/>
+    <wsdl:part name="typeCd" type="s:string"/>
+    <wsdl:part name="findString" type="s:string"/>
+    <wsdl:part name="pageSize" type="s:string"/>
+    <wsdl:part name="page" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="FindProductsHttpGetOut">
+    <wsdl:part name="Body" element="tns:ProductsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetProductDetailHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="partNumber" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetProductDetailHttpGetOut">
+    <wsdl:part name="Body" element="tns:ProductDetailResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetOrderHistoryHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="startDate" type="s:string"/>
+    <wsdl:part name="endDate" type="s:string"/>
+    <wsdl:part name="pageSize" type="s:string"/>
+    <wsdl:part name="page" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetOrderHistoryHttpGetOut">
+    <wsdl:part name="Body" element="tns:OrderHistoryResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoicesHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="startDate" type="s:string"/>
+    <wsdl:part name="endDate" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoicesHttpGetOut">
+    <wsdl:part name="Body" element="tns:InvoicesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoices_v2HttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="startDate" type="s:string"/>
+    <wsdl:part name="endDate" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoices_v2HttpGetOut">
+    <wsdl:part name="Body" element="tns:InvoicesResponseV2"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersHttpGetOut">
+    <wsdl:part name="Body" element="tns:BackorderResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersToShipHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersToShipHttpGetOut">
+    <wsdl:part name="Body" element="tns:BackorderToShipResponse"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGetHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="startDate" type="s:string"/>
+    <wsdl:part name="endDate" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGetHttpGetOut">
+    <wsdl:part name="Body" element="tns:AdvanceShipNoticeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGet_v2HttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="orderNumber" type="s:string"/>
+    <wsdl:part name="startDate" type="s:string"/>
+    <wsdl:part name="endDate" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGet_v2HttpGetOut">
+    <wsdl:part name="Body" element="tns:AdvanceShipNoticeResponse_v2"/>
+  </wsdl:message>
+  <wsdl:message name="RMAValidMACCheckHttpGetIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="mac" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="RMAValidMACCheckHttpGetOut">
+    <wsdl:part name="Body" element="tns:RMAValidMACAddresses"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrderHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrderHttpPostOut">
+    <wsdl:part name="Body" element="tns:OrderResponse"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v2HttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+    <wsdl:part name="backorderFlag" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v2HttpPostOut">
+    <wsdl:part name="Body" element="tns:OrderResponseV2"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v3HttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="endUserCompany" type="s:string"/>
+    <wsdl:part name="endUserAddress1" type="s:string"/>
+    <wsdl:part name="endUserAddress2" type="s:string"/>
+    <wsdl:part name="endUserCity" type="s:string"/>
+    <wsdl:part name="endUserState" type="s:string"/>
+    <wsdl:part name="endUserPostalCode" type="s:string"/>
+    <wsdl:part name="endUserCountry" type="s:string"/>
+    <wsdl:part name="endUserPhone" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+    <wsdl:part name="backorderFlag" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v3HttpPostOut">
+    <wsdl:part name="Body" element="tns:OrderResponseV3"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v4HttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="endUserCompany" type="s:string"/>
+    <wsdl:part name="endUserAddress1" type="s:string"/>
+    <wsdl:part name="endUserAddress2" type="s:string"/>
+    <wsdl:part name="endUserCity" type="s:string"/>
+    <wsdl:part name="endUserState" type="s:string"/>
+    <wsdl:part name="endUserPostalCode" type="s:string"/>
+    <wsdl:part name="endUserCountry" type="s:string"/>
+    <wsdl:part name="endUserPhone" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+    <wsdl:part name="backorderFlag" type="s:string"/>
+    <wsdl:part name="buyer" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v4HttpPostOut">
+    <wsdl:part name="Body" element="tns:OrderResponseV4"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v5HttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="endUserCompany" type="s:string"/>
+    <wsdl:part name="endUserAddress1" type="s:string"/>
+    <wsdl:part name="endUserAddress2" type="s:string"/>
+    <wsdl:part name="endUserCity" type="s:string"/>
+    <wsdl:part name="endUserState" type="s:string"/>
+    <wsdl:part name="endUserPostalCode" type="s:string"/>
+    <wsdl:part name="endUserCountry" type="s:string"/>
+    <wsdl:part name="endUserPhone" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+    <wsdl:part name="backorderFlag" type="s:string"/>
+    <wsdl:part name="buyer" type="s:string"/>
+    <wsdl:part name="endUserEmail" type="s:string"/>
+    <wsdl:part name="endUserPoNumber" type="s:string"/>
+    <wsdl:part name="resellerAssignedCustomerId" type="s:string"/>
+    <wsdl:part name="shipToEmail" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="EnterOrder_v5HttpPostOut">
+    <wsdl:part name="Body" element="tns:OrderResponseV4"/>
+  </wsdl:message>
+  <wsdl:message name="ConvertQuoteToOrderHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="quoteNumber" type="s:string"/>
+    <wsdl:part name="carrierCode" type="s:string"/>
+    <wsdl:part name="svcSaturday" type="s:string"/>
+    <wsdl:part name="svcInsurance" type="s:string"/>
+    <wsdl:part name="svcHoldAtLoc" type="s:string"/>
+    <wsdl:part name="svcInside" type="s:string"/>
+    <wsdl:part name="svcLiftgate" type="s:string"/>
+    <wsdl:part name="svcPod" type="s:string"/>
+    <wsdl:part name="svcPodAdult" type="s:string"/>
+    <wsdl:part name="shipToName" type="s:string"/>
+    <wsdl:part name="shipToAddress1" type="s:string"/>
+    <wsdl:part name="shipToAddress2" type="s:string"/>
+    <wsdl:part name="shipToCity" type="s:string"/>
+    <wsdl:part name="shipToState" type="s:string"/>
+    <wsdl:part name="shipToCountry" type="s:string"/>
+    <wsdl:part name="shipToPhone" type="s:string"/>
+    <wsdl:part name="shipToContact" type="s:string"/>
+    <wsdl:part name="shipToPostalCode" type="s:string"/>
+    <wsdl:part name="shipAddressType" type="s:string"/>
+    <wsdl:part name="shippingSpecialInstr" type="s:string"/>
+    <wsdl:part name="freightType" type="s:string"/>
+    <wsdl:part name="freightAccountNo" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="paymentMethod" type="s:string"/>
+    <wsdl:part name="creditCardId" type="s:string"/>
+    <wsdl:part name="endUserCompany" type="s:string"/>
+    <wsdl:part name="endUserAddress1" type="s:string"/>
+    <wsdl:part name="endUserAddress2" type="s:string"/>
+    <wsdl:part name="endUserCity" type="s:string"/>
+    <wsdl:part name="endUserState" type="s:string"/>
+    <wsdl:part name="endUserPostalCode" type="s:string"/>
+    <wsdl:part name="endUserCountry" type="s:string"/>
+    <wsdl:part name="endUserPhone" type="s:string"/>
+    <wsdl:part name="vcpId" type="s:string"/>
+    <wsdl:part name="backorderFlag" type="s:string"/>
+    <wsdl:part name="buyer" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="ConvertQuoteToOrderHttpPostOut">
+    <wsdl:part name="Body" element="tns:ConvertQuoteResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetVendorsHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetVendorsHttpPostOut">
+    <wsdl:part name="Body" element="tns:VendorResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailabilityHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="productList" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailabilityHttpPostOut">
+    <wsdl:part name="Body" element="tns:PriceAvailabilityResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailability_v2HttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="productList" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetPriceAvailability_v2HttpPostOut">
+    <wsdl:part name="Body" element="tns:PriceAvailabilityResponseV2"/>
+  </wsdl:message>
+  <wsdl:message name="GetPartTypesHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetPartTypesHttpPostOut">
+    <wsdl:part name="Body" element="tns:PartTypesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetShippersHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetShippersHttpPostOut">
+    <wsdl:part name="Body" element="tns:ShippersResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetCustomerCreditCardsHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetCustomerCreditCardsHttpPostOut">
+    <wsdl:part name="Body" element="tns:CreditCardsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="FindProductsHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="vendorCd" type="s:string"/>
+    <wsdl:part name="typeCd" type="s:string"/>
+    <wsdl:part name="findString" type="s:string"/>
+    <wsdl:part name="pageSize" type="s:string"/>
+    <wsdl:part name="page" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="FindProductsHttpPostOut">
+    <wsdl:part name="Body" element="tns:ProductsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetProductDetailHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="partNumber" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetProductDetailHttpPostOut">
+    <wsdl:part name="Body" element="tns:ProductDetailResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetOrderHistoryHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="startDate" type="s:string"/>
+    <wsdl:part name="endDate" type="s:string"/>
+    <wsdl:part name="pageSize" type="s:string"/>
+    <wsdl:part name="page" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetOrderHistoryHttpPostOut">
+    <wsdl:part name="Body" element="tns:OrderHistoryResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoicesHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="startDate" type="s:string"/>
+    <wsdl:part name="endDate" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoicesHttpPostOut">
+    <wsdl:part name="Body" element="tns:InvoicesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoices_v2HttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="startDate" type="s:string"/>
+    <wsdl:part name="endDate" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetInvoices_v2HttpPostOut">
+    <wsdl:part name="Body" element="tns:InvoicesResponseV2"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersHttpPostOut">
+    <wsdl:part name="Body" element="tns:BackorderResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersToShipHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="GetBackordersToShipHttpPostOut">
+    <wsdl:part name="Body" element="tns:BackorderToShipResponse"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGetHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="startDate" type="s:string"/>
+    <wsdl:part name="endDate" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGetHttpPostOut">
+    <wsdl:part name="Body" element="tns:AdvanceShipNoticeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGet_v2HttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="poNumber" type="s:string"/>
+    <wsdl:part name="orderNumber" type="s:string"/>
+    <wsdl:part name="startDate" type="s:string"/>
+    <wsdl:part name="endDate" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="AdvanceShipNoticeGet_v2HttpPostOut">
+    <wsdl:part name="Body" element="tns:AdvanceShipNoticeResponse_v2"/>
+  </wsdl:message>
+  <wsdl:message name="RMAValidMACCheckHttpPostIn">
+    <wsdl:part name="email" type="s:string"/>
+    <wsdl:part name="password" type="s:string"/>
+    <wsdl:part name="mac" type="s:string"/>
+  </wsdl:message>
+  <wsdl:message name="RMAValidMACCheckHttpPostOut">
+    <wsdl:part name="Body" element="tns:RMAValidMACAddresses"/>
+  </wsdl:message>
+  <wsdl:portType name="JenneWebServiceSoap">
+    <wsdl:operation name="EnterOrder">
+      <wsdl:documentation>The method enters an order and checks out, and returns order number</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrderSoapIn"/>
+      <wsdl:output message="tns:EnterOrderSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v2">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v2SoapIn"/>
+      <wsdl:output message="tns:EnterOrder_v2SoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v3">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v3SoapIn"/>
+      <wsdl:output message="tns:EnterOrder_v3SoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v4">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v4SoapIn"/>
+      <wsdl:output message="tns:EnterOrder_v4SoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v5">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v5SoapIn"/>
+      <wsdl:output message="tns:EnterOrder_v5SoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuote">
+      <wsdl:documentation>Gets a quote for the passed items, including shipping cost.</wsdl:documentation>
+      <wsdl:input message="tns:GetQuoteSoapIn"/>
+      <wsdl:output message="tns:GetQuoteSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuote_v2">
+      <wsdl:documentation>Gets a quote for the passed items, including shipping cost.</wsdl:documentation>
+      <wsdl:input message="tns:GetQuote_v2SoapIn"/>
+      <wsdl:output message="tns:GetQuote_v2SoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuote_v3">
+      <wsdl:documentation>Gets a quote for the passed items, including shipping cost.</wsdl:documentation>
+      <wsdl:input message="tns:GetQuote_v3SoapIn"/>
+      <wsdl:output message="tns:GetQuote_v3SoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="CreateQuote">
+      <wsdl:documentation>This Web method creates a Jenne Quote and returns quote details.</wsdl:documentation>
+      <wsdl:input message="tns:CreateQuoteSoapIn"/>
+      <wsdl:output message="tns:CreateQuoteSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertQuoteToOrder">
+      <wsdl:documentation>This Web method creates an order based on a Jenne Quote and returns details of the order.</wsdl:documentation>
+      <wsdl:input message="tns:ConvertQuoteToOrderSoapIn"/>
+      <wsdl:output message="tns:ConvertQuoteToOrderSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendors">
+      <wsdl:documentation>Gets name and code for each vendor.</wsdl:documentation>
+      <wsdl:input message="tns:GetVendorsSoapIn"/>
+      <wsdl:output message="tns:GetVendorsSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability">
+      <wsdl:documentation>Gets price and availability info for a list of products.</wsdl:documentation>
+      <wsdl:input message="tns:GetPriceAvailabilitySoapIn"/>
+      <wsdl:output message="tns:GetPriceAvailabilitySoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability_v2">
+      <wsdl:documentation>Gets price and availability info for a list of products.</wsdl:documentation>
+      <wsdl:input message="tns:GetPriceAvailability_v2SoapIn"/>
+      <wsdl:output message="tns:GetPriceAvailability_v2SoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPartTypes">
+      <wsdl:documentation>Gets name and code for each part type.</wsdl:documentation>
+      <wsdl:input message="tns:GetPartTypesSoapIn"/>
+      <wsdl:output message="tns:GetPartTypesSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetShippers">
+      <wsdl:documentation>Returns name, code, and default flag for each vendor.</wsdl:documentation>
+      <wsdl:input message="tns:GetShippersSoapIn"/>
+      <wsdl:output message="tns:GetShippersSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerCreditCards">
+      <wsdl:documentation>Returns information about credit cards on file for the customer.</wsdl:documentation>
+      <wsdl:input message="tns:GetCustomerCreditCardsSoapIn"/>
+      <wsdl:output message="tns:GetCustomerCreditCardsSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="FindProducts">
+      <wsdl:documentation>Gets products matching the passed parameters.</wsdl:documentation>
+      <wsdl:input message="tns:FindProductsSoapIn"/>
+      <wsdl:output message="tns:FindProductsSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductDetail">
+      <wsdl:documentation>Gets details of a single product.</wsdl:documentation>
+      <wsdl:input message="tns:GetProductDetailSoapIn"/>
+      <wsdl:output message="tns:GetProductDetailSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderHistory">
+      <wsdl:documentation>Gets summary of previous orders for the passed search parameter.</wsdl:documentation>
+      <wsdl:input message="tns:GetOrderHistorySoapIn"/>
+      <wsdl:output message="tns:GetOrderHistorySoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices">
+      <wsdl:documentation>Gets invoices for the passed parameters.</wsdl:documentation>
+      <wsdl:input message="tns:GetInvoicesSoapIn"/>
+      <wsdl:output message="tns:GetInvoicesSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices_v2">
+      <wsdl:documentation>Gets invoices for the passed parameters.</wsdl:documentation>
+      <wsdl:input message="tns:GetInvoices_v2SoapIn"/>
+      <wsdl:output message="tns:GetInvoices_v2SoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackorders">
+      <wsdl:documentation>Returns all backordered order lines for the customer.</wsdl:documentation>
+      <wsdl:input message="tns:GetBackordersSoapIn"/>
+      <wsdl:output message="tns:GetBackordersSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackordersToShip">
+      <wsdl:documentation>Returns all backordered order lines for the customer that are ready to be shipped.</wsdl:documentation>
+      <wsdl:input message="tns:GetBackordersToShipSoapIn"/>
+      <wsdl:output message="tns:GetBackordersToShipSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet">
+      <wsdl:documentation>Returns Advance Ship Notice Carton Information.</wsdl:documentation>
+      <wsdl:input message="tns:AdvanceShipNoticeGetSoapIn"/>
+      <wsdl:output message="tns:AdvanceShipNoticeGetSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet_v2">
+      <wsdl:documentation>Returns Advance Ship Notice Carton Information.</wsdl:documentation>
+      <wsdl:input message="tns:AdvanceShipNoticeGet_v2SoapIn"/>
+      <wsdl:output message="tns:AdvanceShipNoticeGet_v2SoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="RMAValidMACCheck">
+      <wsdl:documentation>The method enters a MAC Address and checks out, and returns order number</wsdl:documentation>
+      <wsdl:input message="tns:RMAValidMACCheckSoapIn"/>
+      <wsdl:output message="tns:RMAValidMACCheckSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="RMACreate">
+      <wsdl:documentation>The method creates a RMA request.</wsdl:documentation>
+      <wsdl:input message="tns:RMACreateSoapIn"/>
+      <wsdl:output message="tns:RMACreateSoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="JenneWebServiceHttpGet">
+    <wsdl:operation name="EnterOrder">
+      <wsdl:documentation>The method enters an order and checks out, and returns order number</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrderHttpGetIn"/>
+      <wsdl:output message="tns:EnterOrderHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v2">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v2HttpGetIn"/>
+      <wsdl:output message="tns:EnterOrder_v2HttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v3">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v3HttpGetIn"/>
+      <wsdl:output message="tns:EnterOrder_v3HttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v4">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v4HttpGetIn"/>
+      <wsdl:output message="tns:EnterOrder_v4HttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v5">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v5HttpGetIn"/>
+      <wsdl:output message="tns:EnterOrder_v5HttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertQuoteToOrder">
+      <wsdl:documentation>This Web method creates an order based on a Jenne Quote and returns details of the order.</wsdl:documentation>
+      <wsdl:input message="tns:ConvertQuoteToOrderHttpGetIn"/>
+      <wsdl:output message="tns:ConvertQuoteToOrderHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendors">
+      <wsdl:documentation>Gets name and code for each vendor.</wsdl:documentation>
+      <wsdl:input message="tns:GetVendorsHttpGetIn"/>
+      <wsdl:output message="tns:GetVendorsHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability">
+      <wsdl:documentation>Gets price and availability info for a list of products.</wsdl:documentation>
+      <wsdl:input message="tns:GetPriceAvailabilityHttpGetIn"/>
+      <wsdl:output message="tns:GetPriceAvailabilityHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability_v2">
+      <wsdl:documentation>Gets price and availability info for a list of products.</wsdl:documentation>
+      <wsdl:input message="tns:GetPriceAvailability_v2HttpGetIn"/>
+      <wsdl:output message="tns:GetPriceAvailability_v2HttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPartTypes">
+      <wsdl:documentation>Gets name and code for each part type.</wsdl:documentation>
+      <wsdl:input message="tns:GetPartTypesHttpGetIn"/>
+      <wsdl:output message="tns:GetPartTypesHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetShippers">
+      <wsdl:documentation>Returns name, code, and default flag for each vendor.</wsdl:documentation>
+      <wsdl:input message="tns:GetShippersHttpGetIn"/>
+      <wsdl:output message="tns:GetShippersHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerCreditCards">
+      <wsdl:documentation>Returns information about credit cards on file for the customer.</wsdl:documentation>
+      <wsdl:input message="tns:GetCustomerCreditCardsHttpGetIn"/>
+      <wsdl:output message="tns:GetCustomerCreditCardsHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="FindProducts">
+      <wsdl:documentation>Gets products matching the passed parameters.</wsdl:documentation>
+      <wsdl:input message="tns:FindProductsHttpGetIn"/>
+      <wsdl:output message="tns:FindProductsHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductDetail">
+      <wsdl:documentation>Gets details of a single product.</wsdl:documentation>
+      <wsdl:input message="tns:GetProductDetailHttpGetIn"/>
+      <wsdl:output message="tns:GetProductDetailHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderHistory">
+      <wsdl:documentation>Gets summary of previous orders for the passed search parameter.</wsdl:documentation>
+      <wsdl:input message="tns:GetOrderHistoryHttpGetIn"/>
+      <wsdl:output message="tns:GetOrderHistoryHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices">
+      <wsdl:documentation>Gets invoices for the passed parameters.</wsdl:documentation>
+      <wsdl:input message="tns:GetInvoicesHttpGetIn"/>
+      <wsdl:output message="tns:GetInvoicesHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices_v2">
+      <wsdl:documentation>Gets invoices for the passed parameters.</wsdl:documentation>
+      <wsdl:input message="tns:GetInvoices_v2HttpGetIn"/>
+      <wsdl:output message="tns:GetInvoices_v2HttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackorders">
+      <wsdl:documentation>Returns all backordered order lines for the customer.</wsdl:documentation>
+      <wsdl:input message="tns:GetBackordersHttpGetIn"/>
+      <wsdl:output message="tns:GetBackordersHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackordersToShip">
+      <wsdl:documentation>Returns all backordered order lines for the customer that are ready to be shipped.</wsdl:documentation>
+      <wsdl:input message="tns:GetBackordersToShipHttpGetIn"/>
+      <wsdl:output message="tns:GetBackordersToShipHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet">
+      <wsdl:documentation>Returns Advance Ship Notice Carton Information.</wsdl:documentation>
+      <wsdl:input message="tns:AdvanceShipNoticeGetHttpGetIn"/>
+      <wsdl:output message="tns:AdvanceShipNoticeGetHttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet_v2">
+      <wsdl:documentation>Returns Advance Ship Notice Carton Information.</wsdl:documentation>
+      <wsdl:input message="tns:AdvanceShipNoticeGet_v2HttpGetIn"/>
+      <wsdl:output message="tns:AdvanceShipNoticeGet_v2HttpGetOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="RMAValidMACCheck">
+      <wsdl:documentation>The method enters a MAC Address and checks out, and returns order number</wsdl:documentation>
+      <wsdl:input message="tns:RMAValidMACCheckHttpGetIn"/>
+      <wsdl:output message="tns:RMAValidMACCheckHttpGetOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="JenneWebServiceHttpPost">
+    <wsdl:operation name="EnterOrder">
+      <wsdl:documentation>The method enters an order and checks out, and returns order number</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrderHttpPostIn"/>
+      <wsdl:output message="tns:EnterOrderHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v2">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v2HttpPostIn"/>
+      <wsdl:output message="tns:EnterOrder_v2HttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v3">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v3HttpPostIn"/>
+      <wsdl:output message="tns:EnterOrder_v3HttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v4">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v4HttpPostIn"/>
+      <wsdl:output message="tns:EnterOrder_v4HttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v5">
+      <wsdl:documentation>This method enters an order and checks out, and returns an order number and a list of any backordered items.</wsdl:documentation>
+      <wsdl:input message="tns:EnterOrder_v5HttpPostIn"/>
+      <wsdl:output message="tns:EnterOrder_v5HttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertQuoteToOrder">
+      <wsdl:documentation>This Web method creates an order based on a Jenne Quote and returns details of the order.</wsdl:documentation>
+      <wsdl:input message="tns:ConvertQuoteToOrderHttpPostIn"/>
+      <wsdl:output message="tns:ConvertQuoteToOrderHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendors">
+      <wsdl:documentation>Gets name and code for each vendor.</wsdl:documentation>
+      <wsdl:input message="tns:GetVendorsHttpPostIn"/>
+      <wsdl:output message="tns:GetVendorsHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability">
+      <wsdl:documentation>Gets price and availability info for a list of products.</wsdl:documentation>
+      <wsdl:input message="tns:GetPriceAvailabilityHttpPostIn"/>
+      <wsdl:output message="tns:GetPriceAvailabilityHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability_v2">
+      <wsdl:documentation>Gets price and availability info for a list of products.</wsdl:documentation>
+      <wsdl:input message="tns:GetPriceAvailability_v2HttpPostIn"/>
+      <wsdl:output message="tns:GetPriceAvailability_v2HttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPartTypes">
+      <wsdl:documentation>Gets name and code for each part type.</wsdl:documentation>
+      <wsdl:input message="tns:GetPartTypesHttpPostIn"/>
+      <wsdl:output message="tns:GetPartTypesHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetShippers">
+      <wsdl:documentation>Returns name, code, and default flag for each vendor.</wsdl:documentation>
+      <wsdl:input message="tns:GetShippersHttpPostIn"/>
+      <wsdl:output message="tns:GetShippersHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerCreditCards">
+      <wsdl:documentation>Returns information about credit cards on file for the customer.</wsdl:documentation>
+      <wsdl:input message="tns:GetCustomerCreditCardsHttpPostIn"/>
+      <wsdl:output message="tns:GetCustomerCreditCardsHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="FindProducts">
+      <wsdl:documentation>Gets products matching the passed parameters.</wsdl:documentation>
+      <wsdl:input message="tns:FindProductsHttpPostIn"/>
+      <wsdl:output message="tns:FindProductsHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductDetail">
+      <wsdl:documentation>Gets details of a single product.</wsdl:documentation>
+      <wsdl:input message="tns:GetProductDetailHttpPostIn"/>
+      <wsdl:output message="tns:GetProductDetailHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderHistory">
+      <wsdl:documentation>Gets summary of previous orders for the passed search parameter.</wsdl:documentation>
+      <wsdl:input message="tns:GetOrderHistoryHttpPostIn"/>
+      <wsdl:output message="tns:GetOrderHistoryHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices">
+      <wsdl:documentation>Gets invoices for the passed parameters.</wsdl:documentation>
+      <wsdl:input message="tns:GetInvoicesHttpPostIn"/>
+      <wsdl:output message="tns:GetInvoicesHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices_v2">
+      <wsdl:documentation>Gets invoices for the passed parameters.</wsdl:documentation>
+      <wsdl:input message="tns:GetInvoices_v2HttpPostIn"/>
+      <wsdl:output message="tns:GetInvoices_v2HttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackorders">
+      <wsdl:documentation>Returns all backordered order lines for the customer.</wsdl:documentation>
+      <wsdl:input message="tns:GetBackordersHttpPostIn"/>
+      <wsdl:output message="tns:GetBackordersHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackordersToShip">
+      <wsdl:documentation>Returns all backordered order lines for the customer that are ready to be shipped.</wsdl:documentation>
+      <wsdl:input message="tns:GetBackordersToShipHttpPostIn"/>
+      <wsdl:output message="tns:GetBackordersToShipHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet">
+      <wsdl:documentation>Returns Advance Ship Notice Carton Information.</wsdl:documentation>
+      <wsdl:input message="tns:AdvanceShipNoticeGetHttpPostIn"/>
+      <wsdl:output message="tns:AdvanceShipNoticeGetHttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet_v2">
+      <wsdl:documentation>Returns Advance Ship Notice Carton Information.</wsdl:documentation>
+      <wsdl:input message="tns:AdvanceShipNoticeGet_v2HttpPostIn"/>
+      <wsdl:output message="tns:AdvanceShipNoticeGet_v2HttpPostOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="RMAValidMACCheck">
+      <wsdl:documentation>The method enters a MAC Address and checks out, and returns order number</wsdl:documentation>
+      <wsdl:input message="tns:RMAValidMACCheckHttpPostIn"/>
+      <wsdl:output message="tns:RMAValidMACCheckHttpPostOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="JenneWebServiceSoap" type="tns:JenneWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="EnterOrder">
+      <soap:operation soapAction="http://WebService.jenne.com/EnterOrder" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v2">
+      <soap:operation soapAction="http://WebService.jenne.com/EnterOrder_v2" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v3">
+      <soap:operation soapAction="http://WebService.jenne.com/EnterOrder_v3" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v4">
+      <soap:operation soapAction="http://WebService.jenne.com/EnterOrder_v4" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v5">
+      <soap:operation soapAction="http://WebService.jenne.com/EnterOrder_v5" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuote">
+      <soap:operation soapAction="http://WebService.jenne.com/GetQuote" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuote_v2">
+      <soap:operation soapAction="http://WebService.jenne.com/GetQuote_v2" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuote_v3">
+      <soap:operation soapAction="http://WebService.jenne.com/GetQuote_v3" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateQuote">
+      <soap:operation soapAction="http://WebService.jenne.com/CreateQuote" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertQuoteToOrder">
+      <soap:operation soapAction="http://WebService.jenne.com/ConvertQuoteToOrder" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendors">
+      <soap:operation soapAction="http://WebService.jenne.com/GetVendors" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability">
+      <soap:operation soapAction="http://WebService.jenne.com/GetPriceAvailability" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability_v2">
+      <soap:operation soapAction="http://WebService.jenne.com/GetPriceAvailability_v2" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPartTypes">
+      <soap:operation soapAction="http://WebService.jenne.com/GetPartTypes" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetShippers">
+      <soap:operation soapAction="http://WebService.jenne.com/GetShippers" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerCreditCards">
+      <soap:operation soapAction="http://WebService.jenne.com/GetCustomerCreditCards" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindProducts">
+      <soap:operation soapAction="http://WebService.jenne.com/FindProducts" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductDetail">
+      <soap:operation soapAction="http://WebService.jenne.com/GetProductDetail" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderHistory">
+      <soap:operation soapAction="http://WebService.jenne.com/GetOrderHistory" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices">
+      <soap:operation soapAction="http://WebService.jenne.com/GetInvoices" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices_v2">
+      <soap:operation soapAction="http://WebService.jenne.com/GetInvoices_v2" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackorders">
+      <soap:operation soapAction="http://WebService.jenne.com/GetBackorders" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackordersToShip">
+      <soap:operation soapAction="http://WebService.jenne.com/GetBackordersToShip" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet">
+      <soap:operation soapAction="http://WebService.jenne.com/AdvanceShipNoticeGet" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet_v2">
+      <soap:operation soapAction="http://WebService.jenne.com/AdvanceShipNoticeGet_v2" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMAValidMACCheck">
+      <soap:operation soapAction="http://WebService.jenne.com/RMAValidMACCheck" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMACreate">
+      <soap:operation soapAction="http://WebService.jenne.com/RMACreate" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="JenneWebServiceSoap12" type="tns:JenneWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="EnterOrder">
+      <soap12:operation soapAction="http://WebService.jenne.com/EnterOrder" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v2">
+      <soap12:operation soapAction="http://WebService.jenne.com/EnterOrder_v2" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v3">
+      <soap12:operation soapAction="http://WebService.jenne.com/EnterOrder_v3" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v4">
+      <soap12:operation soapAction="http://WebService.jenne.com/EnterOrder_v4" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v5">
+      <soap12:operation soapAction="http://WebService.jenne.com/EnterOrder_v5" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuote">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetQuote" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuote_v2">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetQuote_v2" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuote_v3">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetQuote_v3" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateQuote">
+      <soap12:operation soapAction="http://WebService.jenne.com/CreateQuote" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertQuoteToOrder">
+      <soap12:operation soapAction="http://WebService.jenne.com/ConvertQuoteToOrder" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendors">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetVendors" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetPriceAvailability" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability_v2">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetPriceAvailability_v2" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPartTypes">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetPartTypes" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetShippers">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetShippers" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerCreditCards">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetCustomerCreditCards" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindProducts">
+      <soap12:operation soapAction="http://WebService.jenne.com/FindProducts" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductDetail">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetProductDetail" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderHistory">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetOrderHistory" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetInvoices" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices_v2">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetInvoices_v2" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackorders">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetBackorders" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackordersToShip">
+      <soap12:operation soapAction="http://WebService.jenne.com/GetBackordersToShip" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet">
+      <soap12:operation soapAction="http://WebService.jenne.com/AdvanceShipNoticeGet" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet_v2">
+      <soap12:operation soapAction="http://WebService.jenne.com/AdvanceShipNoticeGet_v2" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMAValidMACCheck">
+      <soap12:operation soapAction="http://WebService.jenne.com/RMAValidMACCheck" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMACreate">
+      <soap12:operation soapAction="http://WebService.jenne.com/RMACreate" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="JenneWebServiceHttpGet" type="tns:JenneWebServiceHttpGet">
+    <http:binding verb="GET"/>
+    <wsdl:operation name="EnterOrder">
+      <http:operation location="/EnterOrder"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v2">
+      <http:operation location="/EnterOrder_v2"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v3">
+      <http:operation location="/EnterOrder_v3"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v4">
+      <http:operation location="/EnterOrder_v4"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v5">
+      <http:operation location="/EnterOrder_v5"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertQuoteToOrder">
+      <http:operation location="/ConvertQuoteToOrder"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendors">
+      <http:operation location="/GetVendors"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability">
+      <http:operation location="/GetPriceAvailability"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability_v2">
+      <http:operation location="/GetPriceAvailability_v2"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPartTypes">
+      <http:operation location="/GetPartTypes"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetShippers">
+      <http:operation location="/GetShippers"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerCreditCards">
+      <http:operation location="/GetCustomerCreditCards"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindProducts">
+      <http:operation location="/FindProducts"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductDetail">
+      <http:operation location="/GetProductDetail"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderHistory">
+      <http:operation location="/GetOrderHistory"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices">
+      <http:operation location="/GetInvoices"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices_v2">
+      <http:operation location="/GetInvoices_v2"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackorders">
+      <http:operation location="/GetBackorders"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackordersToShip">
+      <http:operation location="/GetBackordersToShip"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet">
+      <http:operation location="/AdvanceShipNoticeGet"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet_v2">
+      <http:operation location="/AdvanceShipNoticeGet_v2"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMAValidMACCheck">
+      <http:operation location="/RMAValidMACCheck"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="JenneWebServiceHttpPost" type="tns:JenneWebServiceHttpPost">
+    <http:binding verb="POST"/>
+    <wsdl:operation name="EnterOrder">
+      <http:operation location="/EnterOrder"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v2">
+      <http:operation location="/EnterOrder_v2"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v3">
+      <http:operation location="/EnterOrder_v3"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v4">
+      <http:operation location="/EnterOrder_v4"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnterOrder_v5">
+      <http:operation location="/EnterOrder_v5"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertQuoteToOrder">
+      <http:operation location="/ConvertQuoteToOrder"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendors">
+      <http:operation location="/GetVendors"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability">
+      <http:operation location="/GetPriceAvailability"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPriceAvailability_v2">
+      <http:operation location="/GetPriceAvailability_v2"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPartTypes">
+      <http:operation location="/GetPartTypes"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetShippers">
+      <http:operation location="/GetShippers"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerCreditCards">
+      <http:operation location="/GetCustomerCreditCards"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindProducts">
+      <http:operation location="/FindProducts"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductDetail">
+      <http:operation location="/GetProductDetail"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderHistory">
+      <http:operation location="/GetOrderHistory"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices">
+      <http:operation location="/GetInvoices"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoices_v2">
+      <http:operation location="/GetInvoices_v2"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackorders">
+      <http:operation location="/GetBackorders"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBackordersToShip">
+      <http:operation location="/GetBackordersToShip"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet">
+      <http:operation location="/AdvanceShipNoticeGet"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvanceShipNoticeGet_v2">
+      <http:operation location="/AdvanceShipNoticeGet_v2"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMAValidMACCheck">
+      <http:operation location="/RMAValidMACCheck"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="JenneWebService">
+    <wsdl:port name="JenneWebServiceSoap" binding="tns:JenneWebServiceSoap">
+      <soap:address location="https://webservice.jenne.com/JenneWebService.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="JenneWebServiceSoap12" binding="tns:JenneWebServiceSoap12">
+      <soap12:address location="https://webservice.jenne.com/JenneWebService.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="JenneWebServiceHttpGet" binding="tns:JenneWebServiceHttpGet">
+      <http:address location="https://webservice.jenne.com/JenneWebService.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="JenneWebServiceHttpPost" binding="tns:JenneWebServiceHttpPost">
+      <http:address location="https://webservice.jenne.com/JenneWebService.asmx"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

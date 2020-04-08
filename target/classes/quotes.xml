@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<sub-flow name="sf-create-quotes" doc:id="70bb0960-3e9f-4947-9ecb-73995164afb6" >
+		<ee:transform doc:name="DW SET quotes request" doc:id="8bc49fae-3ae7-4242-a28b-759d7b810250" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dwlScripts/quoteRequest.dwl" variableName="quoteRequest" />
+			</ee:variables>
+		</ee:transform>
+		<salesforce:upsert doc:name="SF Upsert quote" doc:id="75474640-7fb0-49b5-bd84-bb167ac8bef9" config-ref="Salesforce_Config" externalIdFieldName="Id" target="quoteResponse" type="Quote">
+			<salesforce:records ><![CDATA[#[[vars.quoteRequest]]]]></salesforce:records>
+		</salesforce:upsert>
+		<ee:transform doc:name="DW SET quoteItems request" doc:id="8aa1eb40-2c88-4e4c-908d-84f97b48ddc7" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dwlScripts/quoteItemsRequest.dwl" variableName="quoteItemsRequest" />
+			</ee:variables>
+		</ee:transform>
+		<salesforce:upsert doc:name="SF Upsert quote Items" doc:id="889aaf92-5c64-4d1d-9064-28dd1246e948" config-ref="Salesforce_Config" externalIdFieldName="Id" type="QuoteLineItem">
+			<salesforce:records ><![CDATA[#[vars.quoteItemsRequest]]]></salesforce:records>
+		</salesforce:upsert>
+	</sub-flow>
+	<sub-flow name="sf-query-quotes" doc:id="6fced550-830e-4c35-85e6-8d81dd51583a" >
+		<salesforce:query doc:name="SF Query quote" doc:id="188b9b32-4bc0-4d97-b7f1-2bca694766d0" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query >#[p('sfdc.create.quote.query') ++ vars.quoteResponse[0].id ++ &quot;'&quot;]</salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="DW SET quote response" doc:id="07785f93-5836-4bf7-b151-080eca54fd3b" >
+			<ee:message >
+				<ee:set-payload resource="dwlScripts/quoteResponse.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

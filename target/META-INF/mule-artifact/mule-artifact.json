@@ -1,0 +1,43 @@
+{
+  "configs": [
+    "implementation.xml",
+    "config.xml",
+    "error-notification.xml",
+    "api.xml",
+    "quotes.xml"
+  ],
+  "secureProperties": [],
+  "redeploymentEnabled": true,
+  "name": "com.mycompany:testsoap:1.0.0-SNAPSHOT",
+  "minMuleVersion": "4.2.2",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [],
+      "exportedResources": [
+        "api/SampleWebService.wsdl",
+        "api.xml",
+        "config/config-local.properties",
+        "config/config-prod.properties",
+        "config/config-qa.properties",
+        "config/config-uat.properties",
+        "config.xml",
+        "dwlScripts/incomingPayload.dwl",
+        "dwlScripts/opportunityRequest.dwl",
+        "dwlScripts/payloadToJson.dwl",
+        "dwlScripts/quoteItemsRequest.dwl",
+        "dwlScripts/quoteRequest.dwl",
+        "dwlScripts/quoteResponse.dwl",
+        "error-notification.xml",
+        "implementation.xml",
+        "log4j2.xml",
+        "quotes.xml"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}
