@@ -1,0 +1,131 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "specialBid": {
+      "type": "string"
+    },
+    "carrierCode": {
+      "type": "string"
+    },
+    "svcSaturday": {
+      "type": "string"
+    },
+    "svcInsurance": {
+      "type": "string"
+    },
+    "svcHoldAtLoc": {
+      "type": "string"
+    },
+    "svcInside": {
+      "type": "string"
+    },
+    "svcLiftgate": {
+      "type": "string"
+    },
+    "svcPod": {
+      "type": "string"
+    },
+    "svcPodAdult": {
+      "type": "string"
+    },
+    "shipToName": {
+      "type": "string"
+    },
+    "shipToAddress1": {
+      "type": "string"
+    },
+    "shipToAddress2": {
+      "type": "string"
+    },
+    "shipToCity": {
+      "type": "string"
+    },
+    "shipToState": {
+      "type": "string"
+    },
+    "shipToCountry": {
+      "type": "string"
+    },
+    "shipToPhone": {
+      "type": "string"
+    },
+    "shipToContact": {
+      "type": "string"
+    },
+    "shipToPostalCode": {
+      "type": "string"
+    },
+    "shipAddressType": {
+      "type": "string"
+    },
+    "shipSpecialInstructions": {
+      "type": "string"
+    },
+    "freightType": {
+      "type": "string"
+    },
+    "freightAccountNo": {
+      "type": "string"
+    },
+    "vcpId": {
+      "type": "string"
+    },
+    "items": {
+      "type": "object",
+      "properties": {
+        "OrderItem": {
+          "type": "object",
+          "properties": {
+            "PartNo": {
+              "type": "string"
+            },
+            "Quantity": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "PartNo",
+            "Quantity"
+          ]
+        }
+      },
+      "required": [
+        "OrderItem"
+      ]
+    }
+  },
+  "required": [
+    "email",
+    "password",
+    "specialBid",
+    "carrierCode",
+    "svcSaturday",
+    "svcInsurance",
+    "svcHoldAtLoc",
+    "svcInside",
+    "svcLiftgate",
+    "svcPod",
+    "svcPodAdult",
+    "shipToName",
+    "shipToAddress1",
+    "shipToCity",
+    "shipToState",
+    "shipToCountry",
+    "shipToPhone",
+    "shipToContact",
+    "shipToPostalCode",
+    "shipAddressType",
+    "shipSpecialInstructions",
+    "freightType",
+    "freightAccountNo",
+    "vcpId",
+    "items"
+  ]
+}

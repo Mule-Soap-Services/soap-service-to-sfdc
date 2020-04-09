@@ -1,0 +1,50 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://WebService.jenne.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetQuote_v3">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="email" use="required" />
+        <xs:element type="xs:string" name="password" use="required"/>
+        <xs:element type="xs:string" name="specialBid" use="required"/>
+        <xs:element type="xs:string" name="carrierCode" use="required"/>
+        <xs:element type="xs:string" name="svcSaturday" use="required"/>
+        <xs:element type="xs:string" name="svcInsurance" use="required"/>
+        <xs:element type="xs:string" name="svcHoldAtLoc" use="required"/>
+        <xs:element type="xs:string" name="svcInside" use="required"/>
+        <xs:element type="xs:string" name="svcLiftgate" use="required"/>
+        <xs:element type="xs:string" name="svcPod" use="required"/>
+        <xs:element type="xs:string" name="svcPodAdult" use="required"/>
+        <xs:element type="xs:string" name="shipToName" use="required"/>
+        <xs:element type="xs:string" name="shipToAddress1" use="required"/>
+        <xs:element type="xs:string" name="shipToAddress2"/>
+        <xs:element type="xs:string" name="shipToCity" use="required"/>
+        <xs:element type="xs:string" name="shipToState" use="required"/>
+        <xs:element type="xs:string" name="shipToCountry" use="required"/>
+        <xs:element type="xs:int" name="shipToPhone" use="required"/>
+        <xs:element type="xs:string" name="shipToContact" use="required"/>
+        <xs:element type="xs:string" name="shipToPostalCode" use="required"/>
+        <xs:element type="xs:string" name="shipAddressType" use="required"/>
+        <xs:element type="xs:string" name="shipSpecialInstructions" use="required"/>
+        <xs:element type="xs:string" name="freightType" use="required"/>
+        <xs:element type="xs:string" name="freightAccountNo" use="required"/>
+        <xs:element type="xs:string" name="vcpId" use="required"/>
+        <xs:element name="items" >
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="OrderItem">
+                <xs:annotation>
+                  <xs:documentation>Zero or more repetitions:</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="PartNo" use="required"/>
+                    <xs:element type="xs:byte" name="Quantity" use="required"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

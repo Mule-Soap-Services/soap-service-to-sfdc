@@ -1,6 +1,7 @@
 %dw 2.0
 output application/java
 var days = p('sfdc.create.opportunity.closedays')
+var recipientAddress = vars.incomingPayload.shipToAddress1 ++'\n'++ vars.incomingPayload.shipToCity ++'\n'++ vars.incomingPayload.shipToState ++'\n'++ vars.incomingPayload.shipToCountry ++'\n'++ vars.incomingPayload.shipToPostalCode
 ---
 [
 {
@@ -16,7 +17,7 @@ Type: p('sfdc.create.opportunity.type'),
 Recipient_Contact_Name__c: vars.incomingPayload.shipToName,
 Recipient_Contact_Phone__c:  vars.incomingPayload.shipToPhone,
 //Recipient_Address__c: vars.incomingPayload.shipToAddress1 ++'\n'++ vars.incomingPayload.shipToCity ++'\n'++ vars.incomingPayload.shipToState ++'\n'++ vars.incomingPayload.shipToCountry ++'\n'++ vars.incomingPayload.shipToPostalCode,
-Recipient_Address__c: "chennai",
+Recipient_Address__c: if(sizeOf(recipientAddress) > 80) recipientAddress[0 to 254] else recipientAddress,
 Stage_Before_Closed__c: p('sfdc.create.opportunity.stage.before.closed.c')
 }
 ]

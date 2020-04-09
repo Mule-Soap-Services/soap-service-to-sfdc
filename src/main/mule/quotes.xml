@@ -16,25 +16,48 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 		<salesforce:upsert doc:name="SF Upsert quote" doc:id="75474640-7fb0-49b5-bd84-bb167ac8bef9" config-ref="Salesforce_Config" externalIdFieldName="Id" target="quoteResponse" type="Quote">
 			<salesforce:records ><![CDATA[#[[vars.quoteRequest]]]]></salesforce:records>
 		</salesforce:upsert>
-		<ee:transform doc:name="DW SET quoteItems request" doc:id="8aa1eb40-2c88-4e4c-908d-84f97b48ddc7" >
-			<ee:message >
+		<choice doc:name="Choice" doc:id="d33cdd9e-a4bd-4f7f-b9b1-0598abad3739" >
+			<when expression="vars.quoteResponse[0].success ~= true">
+				<ee:transform doc:name="DW SET quoteItems request" doc:id="8aa1eb40-2c88-4e4c-908d-84f97b48ddc7">
+			<ee:message>
 			</ee:message>
-			<ee:variables >
+			<ee:variables>
 				<ee:set-variable resource="dwlScripts/quoteItemsRequest.dwl" variableName="quoteItemsRequest" />
 			</ee:variables>
 		</ee:transform>
-		<salesforce:upsert doc:name="SF Upsert quote Items" doc:id="889aaf92-5c64-4d1d-9064-28dd1246e948" config-ref="Salesforce_Config" externalIdFieldName="Id" type="QuoteLineItem">
-			<salesforce:records ><![CDATA[#[vars.quoteItemsRequest]]]></salesforce:records>
+				<salesforce:upsert doc:name="SF Upsert quote Items" doc:id="889aaf92-5c64-4d1d-9064-28dd1246e948" config-ref="Salesforce_Config" externalIdFieldName="Id" type="QuoteLineItem">
+			<salesforce:records><![CDATA[#[vars.quoteItemsRequest]]]></salesforce:records>
 		</salesforce:upsert>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Set SFDC Delete Record Payload" doc:id="a1ef46c1-c994-4b56-ad55-0c906d0b4b94">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+vars.opportunityResponse[0].id]]></ee:set-payload>
+						</ee:message>
+						<ee:variables>
+							<ee:set-variable variableName="errorResponse"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	errorNumber: 1,
+	errorMessage: "Create Quote Operation Failed"
+}]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+				<flow-ref doc:name="pf-sfdc-delete-record-flow" doc:id="5cab3f78-2500-46b8-a648-967fa3dfc060" name="pf-sfdc-delete-record-flow" target="OpportunityRecordDelete"/>
+			</otherwise>
+		</choice>
 	</sub-flow>
 	<sub-flow name="sf-query-quotes" doc:id="6fced550-830e-4c35-85e6-8d81dd51583a" >
 		<salesforce:query doc:name="SF Query quote" doc:id="188b9b32-4bc0-4d97-b7f1-2bca694766d0" config-ref="Salesforce_Config">
 			<salesforce:salesforce-query >#[p('sfdc.create.quote.query') ++ vars.quoteResponse[0].id ++ &quot;'&quot;]</salesforce:salesforce-query>
 		</salesforce:query>
-		<ee:transform doc:name="DW SET quote response" doc:id="07785f93-5836-4bf7-b151-080eca54fd3b" >
-			<ee:message >
-				<ee:set-payload resource="dwlScripts/quoteResponse.dwl" />
-			</ee:message>
-		</ee:transform>
+		<salesforce:query doc:name="SF Query Quote Lines" doc:id="cdfa8ad0-43d4-498e-9221-3e179ff482d9" config-ref="Salesforce_Config" target="quotelineItemsResponse">
+			<salesforce:salesforce-query>#[p('sfdc.create.quotelines.query') ++ vars.quoteResponse[0].id ++ &quot;'&quot;]</salesforce:salesforce-query>
+		</salesforce:query>
+		
 	</sub-flow>
 </mule>

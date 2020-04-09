@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
+	xmlns:xml-module="http://www.mulesoft.org/schema/mule/xml-module" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/xml-module http://www.mulesoft.org/schema/mule/xml-module/current/mule-xml-module.xsd">
 	<flow name="mf-enter-order-implementation" doc:id="8451f501-040d-4da5-9aff-1a8e802cd8b1" >
 		<logger level="INFO" doc:name="mf-enter-order-implementation flow started" doc:id="42764828-38c4-4477-ae31-feea398d795d" message="mf-enter-order-implementation flow started"/>
 		<ee:transform doc:id="db3ac12c-c936-4acd-92be-3a1cb19afbe0">
@@ -33,13 +35,114 @@ ns soap http://schemas.xmlsoap.org/soap/envelope
 			</ee:message>
 			<ee:variables >
 				<ee:set-variable resource="dwlScripts/incomingPayload.dwl" variableName="incomingPayload" />
+				<ee:set-variable resource="dwlScripts/actualPayload.dwl" variableName="actualPayload" />
 			</ee:variables>
 		</ee:transform>
+		<json:validate-schema doc:name="Get Quote Request Validation" doc:id="0f9967aa-8631-45b7-adb6-402e85ca75bf" schema="/schemas/getQuoteJsonSchemaValidation.json">
+			<json:content ><![CDATA[#[vars.incomingPayload]]]></json:content>
+		</json:validate-schema>
 		<flow-ref doc:name="pf-sfdc-create-opportunity" doc:id="b3b622e5-97a1-4b6a-992a-3c592d44b0c6" name="pf-sfdc-create-opportunity" target="opportunityResponse"/>
-		<flow-ref doc:name="pf-sfdc-async-query-price-book-entry" doc:id="ac0f17ea-b74c-4022-99d7-d6364a0e6d66" name="pf-sfdc-async-query-price-book-entry"/>
+		<flow-ref doc:name="pf-sfdc-async-query-price-book-entry" doc:id="ac0f17ea-b74c-4022-99d7-d6364a0e6d66" name="pf-sfdc-async-query-price-book-entry" />
 		<flow-ref doc:name="sf-create-quotes" doc:id="9721cd8b-16a5-4e2c-8fe9-d3582df13f2b" name="sf-create-quotes"/>
-		<flow-ref doc:name="sf-query-quotes" doc:id="8f95d511-7d7b-4ea0-af7d-62666306d952" name="sf-query-quotes"/>
+		<choice doc:name="Choice" doc:id="0b8aa79b-0f55-46b1-90b6-bb8ca87748f4" >
+			<when expression="#[payload[0].success ~= true]">
+				<flow-ref doc:name="sf-query-quotes" doc:id="8f95d511-7d7b-4ea0-af7d-62666306d952" name="sf-query-quotes" />
+				<ee:transform doc:name="DW SET quote response" doc:id="e812b713-0939-4a73-b6ac-dae43a2d75d0">
+			<ee:message>
+				<ee:set-payload resource="dwlScripts/quoteResponse.dwl" />
+			</ee:message>
+		</ee:transform>
+			</when>
+			<when expression="#[vars.errorResponse.errorNumber ~= 1]">
+				<ee:transform doc:name="Transform Message" doc:id="a9a344ca-b64c-4fca-a31b-1918b028fea0" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: if(not isEmpty(vars.errorResponse.errorMessage)) vars.errorResponse.errorMessage else ""
+				}
+		}
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Set Delete Quote Payload" doc:id="f890adce-69bf-4152-ab3c-d47f076b5cfb">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+vars.quoteResponse[0].id]]></ee:set-payload>
+						</ee:message>
+						<ee:variables>
+							<ee:set-variable variableName="errorResponse"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	errorCode: "1",
+	errorMessage: "Create Quote Item Operation Failed"
+}]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+				<flow-ref doc:name="pf-sfdc-delete-record-flow" doc:id="620b716e-baef-45e8-bc4b-7c24418715a7" name="pf-sfdc-delete-record-flow" />
+				<set-payload value="#[vars.opportunityResponse[0].id]" doc:name="Set Delete Opportunity Payload" doc:id="4af6a35c-003a-4455-84db-2642d62cd2ea" mimeType="application/java" />
+				<flow-ref doc:name="pf-sfdc-delete-record-flow" doc:id="8236e763-b824-4c36-9574-0fb617db0d10" name="pf-sfdc-delete-record-flow" />
+				<ee:transform doc:name="Transform Message" doc:id="56924b97-4010-429b-9a89-97beb2b9bcfd">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: if(not isEmpty(vars.errorResponse.errorMessage)) vars.errorResponse.errorMessage else ""
+				}
+		}
+	}
+}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+			</otherwise>
+		</choice>
 		<logger level="INFO" doc:name="mf-get-quote-implementation flow ended" doc:id="0d97ab03-2f0e-48a9-9260-ca3a88344a10" message="mf-get-quote-implementation flow ended"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="528976e3-bfac-4e65-bec4-6e32a2777ab5" type="JSON:SCHEMA_NOT_HONOURED">
+				<ee:transform doc:name="Transform Message" doc:id="6d112ca9-4d07-4678-af50-2827262bf42c" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: "missing required fields " ++ ((error.muleMessage.typedValue.instance.*pointer) joinBy ",") ++ " in the request" 
+				}
+		}
+	}
+}]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+					</ee:variables>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="pf-sfdc-delete-record-flow" doc:id="fa05673b-377f-4c0b-8e75-648a1e278e48" >
+		<logger level="INFO" doc:name="pf-sfdc-delete-record-flow flow started" doc:id="a55db6aa-20fe-4532-aa44-03de980f7128" message="pf-sfdc-delete-record-flow flow started"/>
+		<salesforce:delete doc:name="Delete Sfdc Record" doc:id="832f590f-897c-4f2a-a334-0f29ba0dd721" config-ref="Salesforce_Config">
+			<salesforce:delete-ids ><![CDATA[#[[payload]]]]></salesforce:delete-ids>
+		</salesforce:delete>
+		<logger level="INFO" doc:name="pf-sfdc-delete-record-flow flow ended" doc:id="e3f57280-7f36-42ed-a798-d46cf7a2a7b6" message="pf-sfdc-delete-record-flow flow ended"/>
 	</flow>
 	<flow name="mf-get-advance-ship-notice-implementation" doc:id="d1a720db-e2ea-495f-aa7f-21516a3c945f" >
 		<logger level="INFO" doc:name="mf-get-advance-ship-notice-implementation flow started" doc:id="0a0e8c82-8d2c-4ed8-b079-54bfce61415d" message="mf-get-advance-ship-notice-implementation flow started"/>
@@ -65,12 +168,12 @@ ns soap http://schemas.xmlsoap.org/soap/envelope
 		<logger level="INFO" doc:name="pf-sfdc-async-query-price-book-entry flow started" doc:id="e37fb227-1b7b-4746-94ab-e4978760d133" message="pf-sfdc-async-query-price-book-entry flow started"/>
 		<scatter-gather doc:name="Scatter-Gather" doc:id="15a102c6-3420-430f-8f78-30886cdc9ba8" >
 			<route >
-				<set-payload value="#[p('sfdc.query.product2')]" doc:name="Set Product2 Query" doc:id="0aba49a9-bd43-45fe-963b-ab1c9e2284d6" mimeType="application/json"/>
-				<flow-ref doc:name="pf-sfdc-query" doc:id="01c01db6-8d05-4838-b2f4-826962b39dcd" name="implementationSub_Flow" target="product2QueryResponse"/>
+				<set-payload value="#[p('sfdc.query.product2') ++ vars.actualPayload.items.OrderItem.PartNo ++ &quot;' limit 1&quot;]" doc:name="Set Product2 Query" doc:id="0aba49a9-bd43-45fe-963b-ab1c9e2284d6" mimeType="application/java"/>
+				<flow-ref doc:name="pf-query-pricebook-product" doc:id="01c01db6-8d05-4838-b2f4-826962b39dcd" name="pf-query-pricebook-product" target="product2QueryResponse" targetValue="#[output application/json --- payload]"/>
 			</route>
 			<route >
-				<set-payload value="#[p('sfdc.query.pricebook2')]" doc:name="Set PriceBook2 Query" doc:id="abbccd04-0ba6-4592-ba31-3cc1bf67b3a3" mimeType="application/json"/>
-				<flow-ref doc:name="pf-sfdc-query" doc:id="b323935d-daf2-4bb2-9a58-25f9d0bb19db" name="implementationSub_Flow1" target="priceBook2QueryResponse"/>
+				<set-payload value="#[p('sfdc.query.pricebook2')]" doc:name="Set PriceBook2 Query" doc:id="abbccd04-0ba6-4592-ba31-3cc1bf67b3a3" mimeType="application/java"/>
+				<flow-ref doc:name="pf-query-pricebook-product" doc:id="b323935d-daf2-4bb2-9a58-25f9d0bb19db" name="pf-query-pricebook-product" target="priceBook2QueryResponse" targetValue="#[output application/json --- payload]"/>
 			</route>
 		</scatter-gather>
 		<set-payload value="#[p('sfdc.query.pricebookentry')]" doc:name="Set PriceBookEntry Query" doc:id="dba45317-0489-4282-9462-569a6b093d4a" />
@@ -91,6 +194,7 @@ ns soap http://schemas.xmlsoap.org/soap/envelope
 	</flow>
 	
 	<flow name="pf-sfdc-create-opportunity" doc:id="02b411a1-40cd-46e1-8eec-cc0d62f202d9" >
+		<logger level="INFO" doc:name="pf-sfdc-create-opportunity flow created" doc:id="f2284e48-b922-4475-9fc4-0a1e90511aad" message="pf-sfdc-create-opportunity flow created"/>
 		<ee:transform doc:name="Create Opportunity Request" doc:id="d4055ebe-cdc2-4ecd-8eac-2ebc7afc9f35" >
 			<ee:message >
 				<ee:set-payload resource="dwlScripts/opportunityRequest.dwl" />
@@ -104,15 +208,14 @@ ns soap http://schemas.xmlsoap.org/soap/envelope
 			
 </ee:message>
 		</ee:transform>
-	</flow>
-	<sub-flow name="implementationSub_Flow" doc:id="815494bb-4b1c-4af3-92ee-bac3c36a4d12" >
+		<logger level="INFO" doc:name="pf-sfdc-create-opportunity flow ended" doc:id="8cb97e42-6dc8-4fb4-89d3-8fad311f379b" message="pf-sfdc-create-opportunity flow ended"/>
+	
+</flow>
+	<sub-flow name="pf-query-pricebook-product" doc:id="815494bb-4b1c-4af3-92ee-bac3c36a4d12" >
+		<logger level="INFO" doc:name="pf-query-pricebook-product flow started" doc:id="1af3b8b2-767d-4832-b186-9c2e37872997" message="pf-query-pricebook-product flow started"/>
 		<salesforce:query doc:name="Query" doc:id="af838e9b-c275-4d0e-8f35-8e73553570ce" config-ref="Salesforce_Config">
-			<salesforce:salesforce-query >#[&quot;select Id,Name from Product2 where ProductCode = 'CF100' limit 1&quot;]</salesforce:salesforce-query>
+			<salesforce:salesforce-query >#[output application/java --- payload]</salesforce:salesforce-query>
 		</salesforce:query>
-	</sub-flow>
-	<sub-flow name="implementationSub_Flow1" doc:id="202e077e-2164-4637-85a0-61449a81389a" >
-		<salesforce:query doc:name="Copy_of_Query" doc:id="8d8e8bd1-727a-4c2a-ae23-f9d066742ce6" config-ref="Salesforce_Config">
-			<salesforce:salesforce-query>#[&quot;select Id,Name from PriceBook2 where name='MSRP' limit 1&quot;]</salesforce:salesforce-query>
-		</salesforce:query>
+		<logger level="INFO" doc:name="pf-query-pricebook-product flow ended" doc:id="6139e97a-d731-411f-8e93-95ca5f0ebc07" message="pf-query-pricebook-product flow ended"/>
 	</sub-flow>
 </mule>

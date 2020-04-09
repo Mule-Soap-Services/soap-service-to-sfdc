@@ -91,6 +91,16 @@ output application/json
 				</ee:transform>
 				<flow-ref doc:name="pf-error-email-notification" doc:id="a9bc275f-40ed-45b6-9626-8242b32f0244" name="pf-error-email-notification"/>
 			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2c56f10d-1976-469a-ba5e-eed0fdaf35f3" type="ANY">
+				<ee:transform doc:name="Transform Message" doc:id="d96e5a8f-1adc-4549-9963-66efeac6c09c" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+error.muleMessage.typedValue]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
 		</error-handler>
     </flow>
     <flow name="EnterOrder_v5:\soapkit-config">
