@@ -7,6 +7,7 @@ var days = p('sfdc.create.quote.expirationdays')
 	"Name": "Zoom HaaS  - " ++  vars.incomingPayload.shipToName ++ (now() as String {format: "MMddyyyyHHMM"}),
 	"OpportunityId": vars.opportunityResponse[0].id,
 	"ExpirationDate": (now() as Date) + ("P" ++ days ++"D") as Period,
+	"Pricebook2Id": vars.priceBookEntryResponse[0].Pricebook2.Id,
 	"Status": p('sfdc.create.quote.status'),
 	"ShippingStreet": vars.incomingPayload.shipToAddress1,
 	"ShippingCity": vars.incomingPayload.shipToCity,

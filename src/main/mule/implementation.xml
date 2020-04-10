@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
-	xmlns:xml-module="http://www.mulesoft.org/schema/mule/xml-module" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:xml-module="http://www.mulesoft.org/schema/mule/xml-module"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
-http://www.mulesoft.org/schema/mule/xml-module http://www.mulesoft.org/schema/mule/xml-module/current/mule-xml-module.xsd">
+http://www.mulesoft.org/schema/mule/xml-module http://www.mulesoft.org/schema/mule/xml-module/current/mule-xml-module.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="mf-enter-order-implementation" doc:id="8451f501-040d-4da5-9aff-1a8e802cd8b1" >
 		<logger level="INFO" doc:name="mf-enter-order-implementation flow started" doc:id="42764828-38c4-4477-ae31-feea398d795d" message="mf-enter-order-implementation flow started"/>
 		<ee:transform doc:id="db3ac12c-c936-4acd-92be-3a1cb19afbe0">
@@ -41,10 +42,19 @@ ns soap http://schemas.xmlsoap.org/soap/envelope
 		<json:validate-schema doc:name="Get Quote Request Validation" doc:id="0f9967aa-8631-45b7-adb6-402e85ca75bf" schema="/schemas/getQuoteJsonSchemaValidation.json">
 			<json:content ><![CDATA[#[vars.incomingPayload]]]></json:content>
 		</json:validate-schema>
-		<flow-ref doc:name="pf-sfdc-create-opportunity" doc:id="b3b622e5-97a1-4b6a-992a-3c592d44b0c6" name="pf-sfdc-create-opportunity" target="opportunityResponse"/>
-		<flow-ref doc:name="pf-sfdc-async-query-price-book-entry" doc:id="ac0f17ea-b74c-4022-99d7-d6364a0e6d66" name="pf-sfdc-async-query-price-book-entry" />
-		<flow-ref doc:name="sf-create-quotes" doc:id="9721cd8b-16a5-4e2c-8fe9-d3582df13f2b" name="sf-create-quotes"/>
-		<choice doc:name="Choice" doc:id="0b8aa79b-0f55-46b1-90b6-bb8ca87748f4" >
+		<flow-ref doc:name="pf-basic-auth-flow" doc:id="ca3e8c67-20db-410e-8878-46560c99faac" name="pf-basic-auth-flow"/>
+		<choice doc:name="Choice" doc:id="99278abb-bf2f-4922-b21b-74db29172c42" >
+			<when expression='#[payload.status == "success"]'>
+				<scatter-gather doc:name="Scatter-Gather" doc:id="7d1ecf4c-713b-4cb2-96d9-d711daa888df">
+			<route>
+				<flow-ref doc:name="pf-sfdc-create-opportunity" doc:id="b3b622e5-97a1-4b6a-992a-3c592d44b0c6" name="pf-sfdc-create-opportunity" target="opportunityResponse" />
+			</route>
+			<route>
+				<flow-ref doc:name="pf-query-pricebook-details" doc:id="ac0f17ea-b74c-4022-99d7-d6364a0e6d66" name="pf-query-pricebook-details" target="priceBookEntryResponse" />
+			</route>
+		</scatter-gather>
+				<flow-ref doc:name="sf-create-quotes" doc:id="9721cd8b-16a5-4e2c-8fe9-d3582df13f2b" name="sf-create-quotes" />
+				<choice doc:name="Choice" doc:id="0b8aa79b-0f55-46b1-90b6-bb8ca87748f4">
 			<when expression="#[payload[0].success ~= true]">
 				<flow-ref doc:name="sf-query-quotes" doc:id="8f95d511-7d7b-4ea0-af7d-62666306d952" name="sf-query-quotes" />
 				<ee:transform doc:name="DW SET quote response" doc:id="e812b713-0939-4a73-b6ac-dae43a2d75d0">
@@ -54,9 +64,9 @@ ns soap http://schemas.xmlsoap.org/soap/envelope
 		</ee:transform>
 			</when>
 			<when expression="#[vars.errorResponse.errorNumber ~= 1]">
-				<ee:transform doc:name="Transform Message" doc:id="a9a344ca-b64c-4fca-a31b-1918b028fea0" >
-					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
+				<ee:transform doc:name="Transform Message" doc:id="a9a344ca-b64c-4fca-a31b-1918b028fea0">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
 output application/xml
 ---
 {
@@ -72,7 +82,7 @@ output application/xml
 					</ee:message>
 				</ee:transform>
 			</when>
-			<otherwise >
+			<otherwise>
 				<ee:transform doc:name="Set Delete Quote Payload" doc:id="f890adce-69bf-4152-ab3c-d47f076b5cfb">
 						<ee:message>
 							<ee:set-payload><![CDATA[%dw 2.0
@@ -110,6 +120,27 @@ output application/xml
 }]]></ee:set-payload>
 						</ee:message>
 					</ee:transform>
+			</otherwise>
+		</choice>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Auth Error Response" doc:id="5ca22690-7b09-4713-9e88-c3b1ed7b9411" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: payload.error
+				}
+		}
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="mf-get-quote-implementation flow ended" doc:id="0d97ab03-2f0e-48a9-9260-ca3a88344a10" message="mf-get-quote-implementation flow ended"/>
@@ -164,6 +195,13 @@ ns soap http://schemas.xmlsoap.org/soap/envelope
         </ee:transform>
 		<logger level="INFO" doc:name="mf-get-advance-ship-notice-implementation flow ended" doc:id="67f2ab1e-4b86-4f6b-bece-f6464f18f9e8" message="mf-get-advance-ship-notice-implementation ended"/>
 	</flow>
+	<flow name="pf-query-pricebook-details" doc:id="df256701-13d0-45fe-9917-e377d56006e4" >
+		<logger level="INFO" doc:name="pf-query-pricebook-details flow started" doc:id="d13c45b5-b2f1-45f2-9cd9-a6952fc95629" message="pf-query-pricebook-details flow started"/>
+		<salesforce:query doc:name="Query PriceBookEntry Details" doc:id="7a08bf7b-9eba-46c3-a2b9-08fe4fb863f1" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query >#[p('sfdc.product.pricebook.pricebookentry.query1') ++ vars.actualPayload.items.OrderItem.PartNo ++ p('sfdc.product.pricebook.pricebookentry.query2')]</salesforce:salesforce-query>
+		</salesforce:query>
+		<logger level="INFO" doc:name="pf-query-pricebook-details flow ended" doc:id="b98282e7-4d77-4d55-bf3b-933cb6e4a088" message="pf-query-pricebook-details flow ended"/>
+	</flow>
 	<flow name="pf-sfdc-async-query-price-book-entry" doc:id="31d21a58-acfb-48a6-8c80-8baa6e7604ec" >
 		<logger level="INFO" doc:name="pf-sfdc-async-query-price-book-entry flow started" doc:id="e37fb227-1b7b-4746-94ab-e4978760d133" message="pf-sfdc-async-query-price-book-entry flow started"/>
 		<scatter-gather doc:name="Scatter-Gather" doc:id="15a102c6-3420-430f-8f78-30886cdc9ba8" >
@@ -181,9 +219,10 @@ ns soap http://schemas.xmlsoap.org/soap/envelope
 		<logger level="INFO" doc:name="pf-sfdc-async-query-price-book-entry flow ended" doc:id="76e9e33a-26c8-4c07-8470-b561f84de77e" message="pf-sfdc-async-query-price-book-entry flow ended"/>
 	</flow>
 	<flow name="pf-sfdc-query" doc:id="fa5af893-f550-42d7-abe3-dbda6ad4f1f8" >
+		<http:listener doc:name="Listener" doc:id="741b1318-c18b-4f5e-875c-4af51df3d732" config-ref="HTTP_Listener_config" path="/query"/>
 		<logger level="INFO" doc:name="pf-sfdc-query flow started" doc:id="54707095-3dfc-4763-b4ab-f45288f6df74" message="pf-sfdc-query flow started"/>
 		<salesforce:query doc:id="698796b6-361f-4125-87ee-2b8cd1965cab" config-ref="Salesforce_Config" doc:name="Query SFDC">
-			<salesforce:salesforce-query >#[&quot;select Id,UnitPrice from PriceBookEntry where Product2Id= '01t61000003Th2EAAS' and PriceBook2Id= '01s61000003XvlFAAS' and CurrencyIsoCode='USD' limit 1&quot;]</salesforce:salesforce-query>
+			<salesforce:salesforce-query >#[&quot;Select Id,Product2.Id, Product2.ProductCode, PriceBook2.Id,PriceBook2.Name,UnitPrice from PriceBookEntry where Product2.ProductCode IN ('HaaS-Test1', 'DTEN55G2WAR2') and PriceBook2.Name = 'MSRP' and CurrencyIsoCode='USD'&quot;]</salesforce:salesforce-query>
 		</salesforce:query>
 		<ee:transform doc:name="SFDC Query Response" doc:id="0cd0be64-0228-4858-aa9f-004642867ec8" >
 			<ee:message >

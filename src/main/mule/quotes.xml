@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="d9c5c402-64eb-44b3-b997-65b03649e53c" >
+		<http:request-connection host="basic-auth-soap.us-e2.cloudhub.io" >
+			<http:authentication >
+				<http:basic-authentication username="#[vars.incomingPayload.email]" password="#[vars.incomingPayload.password]" />
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
 	<sub-flow name="sf-create-quotes" doc:id="70bb0960-3e9f-4947-9ecb-73995164afb6" >
 		<ee:transform doc:name="DW SET quotes request" doc:id="8bc49fae-3ae7-4242-a28b-759d7b810250" >
 			<ee:message >
@@ -20,14 +28,14 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 			<when expression="vars.quoteResponse[0].success ~= true">
 				<ee:transform doc:name="DW SET quoteItems request" doc:id="8aa1eb40-2c88-4e4c-908d-84f97b48ddc7">
 			<ee:message>
+						<ee:set-payload resource="dwlScripts/quoteItemsRequest.dwl" />
 			</ee:message>
 			<ee:variables>
-				<ee:set-variable resource="dwlScripts/quoteItemsRequest.dwl" variableName="quoteItemsRequest" />
 			</ee:variables>
 		</ee:transform>
 				<salesforce:upsert doc:name="SF Upsert quote Items" doc:id="889aaf92-5c64-4d1d-9064-28dd1246e948" config-ref="Salesforce_Config" externalIdFieldName="Id" type="QuoteLineItem">
-			<salesforce:records><![CDATA[#[vars.quoteItemsRequest]]]></salesforce:records>
 		</salesforce:upsert>
+				<logger level="INFO" doc:name="Payload logger" doc:id="828e9eba-1302-4563-affa-5ec33c6d7234" message="#[output application/json --- payload]"/>
 			</when>
 			<otherwise >
 				<ee:transform doc:name="Set SFDC Delete Record Payload" doc:id="a1ef46c1-c994-4b56-ad55-0c906d0b4b94">
@@ -52,12 +60,23 @@ output application/java
 		</choice>
 	</sub-flow>
 	<sub-flow name="sf-query-quotes" doc:id="6fced550-830e-4c35-85e6-8d81dd51583a" >
-		<salesforce:query doc:name="SF Query quote" doc:id="188b9b32-4bc0-4d97-b7f1-2bca694766d0" config-ref="Salesforce_Config">
-			<salesforce:salesforce-query >#[p('sfdc.create.quote.query') ++ vars.quoteResponse[0].id ++ &quot;'&quot;]</salesforce:salesforce-query>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="993bfa0b-a960-49ef-851f-c4af5f046caa" >
+			<route >
+				<salesforce:query doc:name="SF Query quote" doc:id="188b9b32-4bc0-4d97-b7f1-2bca694766d0" config-ref="Salesforce_Config" target="quoteQueryResponse">
+			<salesforce:salesforce-query>#[p('sfdc.create.quote.query') ++ vars.quoteResponse[0].id ++ &quot;'&quot;]</salesforce:salesforce-query>
 		</salesforce:query>
-		<salesforce:query doc:name="SF Query Quote Lines" doc:id="cdfa8ad0-43d4-498e-9221-3e179ff482d9" config-ref="Salesforce_Config" target="quotelineItemsResponse">
+			</route>
+			<route >
+				<salesforce:query doc:name="SF Query Quote Lines" doc:id="cdfa8ad0-43d4-498e-9221-3e179ff482d9" config-ref="Salesforce_Config" target="quotelineItemsResponse">
 			<salesforce:salesforce-query>#[p('sfdc.create.quotelines.query') ++ vars.quoteResponse[0].id ++ &quot;'&quot;]</salesforce:salesforce-query>
 		</salesforce:query>
+			</route>
+		</scatter-gather>
 		
 	</sub-flow>
+	<flow name="pf-basic-auth-flow" doc:id="a631b1c8-4c81-49ea-9e14-69cf012b8d2b" >
+		<logger level="INFO" doc:name="pf-basic-auth-flow started" doc:id="2260ad6e-8906-426a-88cf-73f83ebf3bb1" message="pf-basic-auth-flow started"/>
+		<http:request method="GET" doc:name="Basic Auth Rest Api Call" doc:id="f534333d-4ab6-4032-9a0c-d1b67f0a031e" config-ref="HTTP_Request_configuration" path="/auth"/>
+		<logger level="INFO" doc:name="pf-basic-auth-flow ended" doc:id="1e5a5315-4eca-4693-80f4-2db3a7740700" message="pf-basic-auth-flow ended"/>
+	</flow>
 </mule>

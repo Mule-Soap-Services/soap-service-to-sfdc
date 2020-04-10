@@ -5,8 +5,8 @@ output application/xml
 {
     GetQuote_v3Response: {
          GetQuote_v3Result: {
-            "QuoteNumber": payload[0].QuoteNumber,
-            "QuoteSubtotal": payload[0].Subtotal,
+            "QuoteNumber": vars.quoteQueryResponse[0].QuoteNumber,
+            "QuoteSubtotal": vars.quoteQueryResponse[0].Subtotal,
             "CarrierCode": vars.incomingPayload.carrierCode,
             "SvcSaturday": vars.incomingPayload.svcSaturday,
             "SvcInsurance": vars.incomingPayload.svcInsurance,
@@ -18,7 +18,7 @@ output application/xml
             "freightType": vars.incomingPayload.freightType,
             "freightAccountNo": vars.incomingPayload.freightAccountNo,
             "Freight": vars.incomingPayload.Freight default "",
-            "QuoteTotal": payload[0].GrandTotal
+            "QuoteTotal": vars.quoteQueryResponse[0].GrandTotal
             },
             OrderedLines: {
 	            OrderedLineV2: vars.quotelineItemsResponse map {

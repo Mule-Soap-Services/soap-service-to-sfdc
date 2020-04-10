@@ -35,12 +35,17 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 				<ee:transform doc:name="DW SET APIKIT-SOAP:FAULT" doc:id="9de134db-0331-4715-9708-dede65a7f29f" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
+output application/xml
 ---
 {
-	"error_code": "APIKIT-SOAP:FAULT",
-	"correlation_id": correlationId,
-	"error_message": error.description
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: "SOAP Fault Exception" 
+				}
+		}
+	}
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -50,12 +55,17 @@ output application/json
 				<ee:transform doc:name="DW SET APIKIT-SOAP:ROUTER" doc:id="a135bb74-9cd5-4326-97e9-b6cb77321d21" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
+output application/xml
 ---
 {
-	"error_code": "APIKIT-SOAP:ROUTER",
-	"correlation_id": correlationId,
-	"error_message": error.description
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: "SOAP Router Exception" 
+				}
+		}
+	}
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -65,12 +75,17 @@ output application/json
 				<ee:transform doc:name="DW SET EXPRESSION" doc:id="a1bcfd01-7f75-4c66-af10-b6be8d12cb38" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
+output application/xml
 ---
 {
-	"error_code": "EXPRESSION",
-	"correlation_id": correlationId,
-	"error_message": error.description
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: "Expression Error" 
+				}
+		}
+	}
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -80,24 +95,67 @@ output application/json
 				<ee:transform doc:name="DW SET STREAM_MAXIMUM_SIZE_EXCEEDED" doc:id="83290249-5d18-45fc-b2f7-8fdf7b4fea19" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
+output application/xml
 ---
 {
-	"error_code": "STREAM_MAXIMUM_SIZE_EXCEEDED",
-	"correlation_id": correlationId,
-	"error_message": error.description
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: "Stream Maximum Size Exceeded" 
+				}
+		}
+	}
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 				<flow-ref doc:name="pf-error-email-notification" doc:id="a9bc275f-40ed-45b6-9626-8242b32f0244" name="pf-error-email-notification"/>
 			</on-error-propagate>
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2c56f10d-1976-469a-ba5e-eed0fdaf35f3" type="ANY">
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2c56f10d-1976-469a-ba5e-eed0fdaf35f3" type="JSON:SCHEMA_NOT_HONOURED">
 				<ee:transform doc:name="Transform Message" doc:id="d96e5a8f-1adc-4549-9963-66efeac6c09c" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/xml
 ---
 error.muleMessage.typedValue]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ce3fe18c-fdbd-4145-9500-4fb458663dff" type="HTTP:UNAUTHORIZED">
+				<ee:transform doc:name="Transform Message" doc:id="1c6a8eaa-8e94-45f4-a2fa-ba59d3b613ea" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: "Unauthorized" 
+				}
+		}
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d14b3d68-3a70-4189-af59-1fc59b243411" type="ANY">
+				<ee:transform doc:name="Transform Message" doc:id="156abbc6-944e-4cc5-a338-0e8c29be58a7">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: "Internal Server Error" 
+				}
+		}
+	}
+}]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</on-error-propagate>
