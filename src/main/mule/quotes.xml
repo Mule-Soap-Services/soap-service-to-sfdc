@@ -7,7 +7,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="d9c5c402-64eb-44b3-b997-65b03649e53c" >
-		<http:request-connection host="basic-auth-soap.us-e2.cloudhub.io" >
+		<http:request-connection host="#[p('authentication.host')]" port="#[p('authentication.port')]">
 			<http:authentication >
 				<http:basic-authentication username="#[vars.incomingPayload.email]" password="#[vars.incomingPayload.password]" />
 			</http:authentication>

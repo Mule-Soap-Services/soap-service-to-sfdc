@@ -202,22 +202,6 @@ ns soap http://schemas.xmlsoap.org/soap/envelope
 		</salesforce:query>
 		<logger level="INFO" doc:name="pf-query-pricebook-details flow ended" doc:id="b98282e7-4d77-4d55-bf3b-933cb6e4a088" message="pf-query-pricebook-details flow ended"/>
 	</flow>
-	<flow name="pf-sfdc-async-query-price-book-entry" doc:id="31d21a58-acfb-48a6-8c80-8baa6e7604ec" >
-		<logger level="INFO" doc:name="pf-sfdc-async-query-price-book-entry flow started" doc:id="e37fb227-1b7b-4746-94ab-e4978760d133" message="pf-sfdc-async-query-price-book-entry flow started"/>
-		<scatter-gather doc:name="Scatter-Gather" doc:id="15a102c6-3420-430f-8f78-30886cdc9ba8" >
-			<route >
-				<set-payload value="#[p('sfdc.query.product2') ++ vars.actualPayload.items.OrderItem.PartNo ++ &quot;' limit 1&quot;]" doc:name="Set Product2 Query" doc:id="0aba49a9-bd43-45fe-963b-ab1c9e2284d6" mimeType="application/java"/>
-				<flow-ref doc:name="pf-query-pricebook-product" doc:id="01c01db6-8d05-4838-b2f4-826962b39dcd" name="pf-query-pricebook-product" target="product2QueryResponse" targetValue="#[output application/json --- payload]"/>
-			</route>
-			<route >
-				<set-payload value="#[p('sfdc.query.pricebook2')]" doc:name="Set PriceBook2 Query" doc:id="abbccd04-0ba6-4592-ba31-3cc1bf67b3a3" mimeType="application/java"/>
-				<flow-ref doc:name="pf-query-pricebook-product" doc:id="b323935d-daf2-4bb2-9a58-25f9d0bb19db" name="pf-query-pricebook-product" target="priceBook2QueryResponse" targetValue="#[output application/json --- payload]"/>
-			</route>
-		</scatter-gather>
-		<set-payload value="#[p('sfdc.query.pricebookentry')]" doc:name="Set PriceBookEntry Query" doc:id="dba45317-0489-4282-9462-569a6b093d4a" />
-		<flow-ref doc:name="pf-sfdc-query" doc:id="05614290-c325-4eb9-86b9-20f1d95afee1" name="pf-sfdc-query" target="priceBookEntryQueryResponse"/>
-		<logger level="INFO" doc:name="pf-sfdc-async-query-price-book-entry flow ended" doc:id="76e9e33a-26c8-4c07-8470-b561f84de77e" message="pf-sfdc-async-query-price-book-entry flow ended"/>
-	</flow>
 	<flow name="pf-sfdc-query" doc:id="fa5af893-f550-42d7-abe3-dbda6ad4f1f8" >
 		<http:listener doc:name="Listener" doc:id="741b1318-c18b-4f5e-875c-4af51df3d732" config-ref="HTTP_Listener_config" path="/query"/>
 		<logger level="INFO" doc:name="pf-sfdc-query flow started" doc:id="54707095-3dfc-4763-b4ab-f45288f6df74" message="pf-sfdc-query flow started"/>
