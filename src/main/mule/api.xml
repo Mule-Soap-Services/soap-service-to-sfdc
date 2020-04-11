@@ -18,7 +18,17 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
                 <http:headers><![CDATA[#[attributes.protocolHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <apikit-soap:router config-ref="soapkit-config">
+        <ee:transform doc:name="DW SET authentication payload" doc:id="67c4caca-4f27-45de-a78b-4fa31eb51073" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dwlScripts/authenticationPayload.dwl" variableName="authenticationPayload" />
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="pf-basic-auth-flow" doc:id="1e75e856-3edd-47c8-bc37-2da732a0f875" name="pf-basic-auth-flow" target="authenticationResponse"/>
+		<choice doc:name="Choice" doc:id="d081e377-3086-42b9-8032-8b3878737d9b" >
+			<when expression='#[vars.authenticationResponse.status == "success"]'>
+				<apikit-soap:router config-ref="soapkit-config">
             <apikit-soap:message>#[payload]</apikit-soap:message>
             <apikit-soap:attributes>#[
               %dw 2.0
@@ -30,6 +40,27 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
                   queryString: attributes.queryString
             }]</apikit-soap:attributes>
         </apikit-soap:router>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Transform Message" doc:id="e920b20a-c1dc-4c47-95d9-74a6b2067184" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    GetQuote_v3Response: {
+            OrderedLines: {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: vars.authenticationResponse.error
+				}
+		}
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
 		<error-handler >
 			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f298103b-c0b6-4814-8d4d-3d2c20f3c374" type="APIKIT-SOAP:FAULT">
 				<ee:transform doc:name="DW SET APIKIT-SOAP:FAULT" doc:id="9de134db-0331-4715-9708-dede65a7f29f" >

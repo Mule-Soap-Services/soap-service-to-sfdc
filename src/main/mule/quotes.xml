@@ -8,9 +8,6 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="d9c5c402-64eb-44b3-b997-65b03649e53c" >
 		<http:request-connection host="#[p('authentication.host')]" port="#[p('authentication.port')]">
-			<http:authentication >
-				<http:basic-authentication username="#[vars.incomingPayload.email]" password="#[vars.incomingPayload.password]" />
-			</http:authentication>
 		</http:request-connection>
 	</http:request-config>
 	<sub-flow name="sf-create-quotes" doc:id="70bb0960-3e9f-4947-9ecb-73995164afb6" >
@@ -59,24 +56,16 @@ output application/java
 			</otherwise>
 		</choice>
 	</sub-flow>
-	<sub-flow name="sf-query-quotes" doc:id="6fced550-830e-4c35-85e6-8d81dd51583a" >
-		<scatter-gather doc:name="Scatter-Gather" doc:id="993bfa0b-a960-49ef-851f-c4af5f046caa" >
-			<route >
-				<salesforce:query doc:name="SF Query quote" doc:id="188b9b32-4bc0-4d97-b7f1-2bca694766d0" config-ref="Salesforce_Config" target="quoteQueryResponse">
-			<salesforce:salesforce-query>#[p('sfdc.create.quote.query') ++ vars.quoteResponse[0].id ++ &quot;'&quot;]</salesforce:salesforce-query>
-		</salesforce:query>
-			</route>
-			<route >
-				<salesforce:query doc:name="SF Query Quote Lines" doc:id="cdfa8ad0-43d4-498e-9221-3e179ff482d9" config-ref="Salesforce_Config" target="quotelineItemsResponse">
-			<salesforce:salesforce-query>#[p('sfdc.create.quotelines.query') ++ vars.quoteResponse[0].id ++ &quot;'&quot;]</salesforce:salesforce-query>
-		</salesforce:query>
-			</route>
-		</scatter-gather>
-		
-	</sub-flow>
 	<flow name="pf-basic-auth-flow" doc:id="a631b1c8-4c81-49ea-9e14-69cf012b8d2b" >
 		<logger level="INFO" doc:name="pf-basic-auth-flow started" doc:id="2260ad6e-8906-426a-88cf-73f83ebf3bb1" message="pf-basic-auth-flow started"/>
-		<http:request method="GET" doc:name="Basic Auth Rest Api Call" doc:id="f534333d-4ab6-4032-9a0c-d1b67f0a031e" config-ref="HTTP_Request_configuration" path="/auth"/>
+		<http:request method="GET" doc:name="Basic Auth Rest Api Call" doc:id="f534333d-4ab6-4032-9a0c-d1b67f0a031e" config-ref="HTTP_Request_configuration" path="/auth">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : vars.authenticationPayload.password,
+	"client_id" : vars.authenticationPayload.email
+}]]]></http:headers>
+		</http:request>
 		<logger level="INFO" doc:name="pf-basic-auth-flow ended" doc:id="1e5a5315-4eca-4693-80f4-2db3a7740700" message="pf-basic-auth-flow ended"/>
 	</flow>
 </mule>
