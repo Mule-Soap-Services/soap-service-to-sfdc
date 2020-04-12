@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	
+	<flow name="pf-basic-auth-flow" doc:id="6bb218ef-0586-4f9d-b027-941ca4fc1f27" >
+		<logger level="INFO" doc:name="pf-basic-auth-flow started" doc:id="b2c816af-58a8-40a8-a6b7-655273112d3c" message="pf-basic-auth-flow started"/>
+		<http:request method="GET" doc:name="Basic Auth Rest Api Call" doc:id="c84e9412-0877-4b1c-bf48-8fd3cad21364" config-ref="HTTP_Request_configuration_auth" path="/auth">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : vars.authenticationPayload.password,
+	"client_id" : vars.authenticationPayload.email
+}]]]></http:headers>
+		</http:request>
+		<logger level="INFO" doc:name="pf-basic-auth-flow ended" doc:id="23a704cb-fed8-4cc7-985b-57e9568542b6" message="pf-basic-auth-flow ended"/>
+	</flow>
+	
+</mule>

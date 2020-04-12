@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit-soap="http://www.mulesoft.org/schema/mule/apikit-soap" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/mule/apikit-soap/current/mule-apikit-soap.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
-    <http:listener-config name="api-httpListenerConfig">
-        <http:listener-connection host="0.0.0.0" port="8081"/>
-    </http:listener-config>
-    <apikit-soap:config name="soapkit-config" wsdlLocation="api\SampleWebService.wsdl" service="JenneWebService" port="JenneWebServiceSoap12"/>
+    
+    <apikit-soap:config name="soapkit-config" wsdlLocation="api\SampleWebService.wsdl" service="JenneWebService" port="JenneWebServiceSoap12" soapVersion="SOAP12"/>
     <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="478cc4a1-601d-4bcc-a839-92ce401c5d2a" >
 		<http:listener-connection host="0.0.0.0" port="8085" />
 	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="e370178a-e6d8-47ed-bed1-8496222ca80a" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
 	<flow name="api-main">
-        <http:listener config-ref="api-httpListenerConfig" path="/JenneWebService/JenneWebServiceSoap" outputMimeType="application/xml">
+        <http:listener config-ref="HTTP_Listener_config1" path="/JenneWebService/JenneWebServiceSoap" outputMimeType="application/xml">
             <http:response statusCode="#[attributes.protocolHeaders.httpStatus default 200]">
                 <http:headers><![CDATA[#[attributes.protocolHeaders default {}]]]></http:headers>
             </http:response>
-            <http:error-response statusCode="#[attributes.protocolHeaders.httpStatus default 500]">
+            <http:error-response statusCode="#[if(not isEmpty(vars.httpStatus)) vars.httpStatus else (attributes.protocolHeaders.httpStatus default 500)]">
                 <http:body><![CDATA[#[payload]]]></http:body>
                 <http:headers><![CDATA[#[attributes.protocolHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <ee:transform doc:name="DW SET authentication payload" doc:id="67c4caca-4f27-45de-a78b-4fa31eb51073" >
+        <ee:transform doc:name="DW SET authentication payload" doc:id="d70725d6-1351-4f62-8cd8-2935e20cc2e7" >
 			<ee:message >
 			</ee:message>
 			<ee:variables >
 				<ee:set-variable resource="dwlScripts/authenticationPayload.dwl" variableName="authenticationPayload" />
-			</ee:variables>
+				<ee:set-variable variableName="serviceName" ><![CDATA[%dw 2.0
+output application/java
+---
+((payload.Envelope.Body pluck ((value, key, index) -> key))[0]) ++ "Response"]]></ee:set-variable>
+			
+</ee:variables>
 		</ee:transform>
-		<flow-ref doc:name="pf-basic-auth-flow" doc:id="1e75e856-3edd-47c8-bc37-2da732a0f875" name="pf-basic-auth-flow" target="authenticationResponse"/>
-		<choice doc:name="Choice" doc:id="d081e377-3086-42b9-8032-8b3878737d9b" >
+		<flow-ref doc:name="pf-basic-auth-flow" doc:id="405f78e8-8111-4a20-8354-470df1959d93" name="pf-basic-auth-flow" target="authenticationResponse"/>
+		<choice doc:name="Choice" doc:id="b920c5c2-de72-47c3-b487-4440094e9a67" >
 			<when expression='#[vars.authenticationResponse.status == "success"]'>
 				<apikit-soap:router config-ref="soapkit-config">
             <apikit-soap:message>#[payload]</apikit-soap:message>
@@ -42,20 +48,18 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
         </apikit-soap:router>
 			</when>
 			<otherwise >
-				<ee:transform doc:name="Transform Message" doc:id="e920b20a-c1dc-4c47-95d9-74a6b2067184" >
+				<ee:transform doc:name="Auth Error Response" doc:id="96f68e88-3305-4709-9284-530460403c2f" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/xml
 ---
 {
-    GetQuote_v3Response: {
-            OrderedLines: {
+    (vars.serviceName): {
 				Error: {
 					ErrorNumber: 1,
 					ErrorDescription: vars.authenticationResponse.error
 				}
 		}
-	}
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -69,14 +73,12 @@ output application/xml
 output application/xml
 ---
 {
-    GetQuote_v3Response: {
-            OrderedLines: {
+    (vars.serviceName): {
 				Error: {
 					ErrorNumber: 1,
 					ErrorDescription: "SOAP Fault Exception" 
 				}
 		}
-	}
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -89,14 +91,12 @@ output application/xml
 output application/xml
 ---
 {
-    GetQuote_v3Response: {
-            OrderedLines: {
+    (vars.serviceName): {
 				Error: {
 					ErrorNumber: 1,
 					ErrorDescription: "SOAP Router Exception" 
 				}
 		}
-	}
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -109,13 +109,11 @@ output application/xml
 output application/xml
 ---
 {
-    GetQuote_v3Response: {
-            OrderedLines: {
+    (vars.serviceName): {
 				Error: {
 					ErrorNumber: 1,
 					ErrorDescription: "Expression Error" 
 				}
-		}
 	}
 }]]></ee:set-payload>
 					</ee:message>
@@ -129,21 +127,41 @@ output application/xml
 output application/xml
 ---
 {
-    GetQuote_v3Response: {
-            OrderedLines: {
+    (vars.serviceName): {
 				Error: {
 					ErrorNumber: 1,
 					ErrorDescription: "Stream Maximum Size Exceeded" 
 				}
-		}
 	}
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 				<flow-ref doc:name="pf-error-email-notification" doc:id="a9bc275f-40ed-45b6-9626-8242b32f0244" name="pf-error-email-notification"/>
 			</on-error-propagate>
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2c56f10d-1976-469a-ba5e-eed0fdaf35f3" type="JSON:SCHEMA_NOT_HONOURED">
-				<ee:transform doc:name="Transform Message" doc:id="d96e5a8f-1adc-4549-9963-66efeac6c09c" >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="6f28cc36-3893-4482-ae70-547075a7d5a0" type="HTTP:UNAUTHORIZED">
+				<ee:transform doc:name="HTTP Un Authorized" doc:id="9154d132-8e0e-44a6-b0be-bbc36e4a6aae" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    (vars.serviceName): {
+				Error: {
+					ErrorNumber: 1,
+					ErrorDescription: "Unauthorized" 
+				}
+		}
+}]]></ee:set-payload>
+					
+</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="httpStatus" ><![CDATA[401]]></ee:set-variable>
+					</ee:variables>
+				
+</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="6cca6c13-706c-417f-a8ee-67779786987f" type="JSON:SCHEMA_NOT_HONOURED">
+				<ee:transform doc:name="Schema Not Honoured" doc:id="be8742be-f9ac-4670-9d52-0ab9a263ddc5" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/xml
@@ -152,45 +170,24 @@ error.muleMessage.typedValue]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</on-error-propagate>
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ce3fe18c-fdbd-4145-9500-4fb458663dff" type="HTTP:UNAUTHORIZED">
-				<ee:transform doc:name="Transform Message" doc:id="1c6a8eaa-8e94-45f4-a2fa-ba59d3b613ea" >
-					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
-output application/xml
----
-{
-    GetQuote_v3Response: {
-            OrderedLines: {
-				Error: {
-					ErrorNumber: 1,
-					ErrorDescription: "Unauthorized" 
-				}
-		}
-	}
-}]]></ee:set-payload>
-					</ee:message>
-				</ee:transform>
-			</on-error-propagate>
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d14b3d68-3a70-4189-af59-1fc59b243411" type="ANY">
-				<ee:transform doc:name="Transform Message" doc:id="156abbc6-944e-4cc5-a338-0e8c29be58a7">
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e4b887fb-1dba-462e-8456-09b5fb5d8789" type="ANY">
+				<ee:transform doc:name="Other Errors" doc:id="cf580f72-9751-4e1c-a4ea-85f63deeb439">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
 output application/xml
 ---
 {
-    GetQuote_v3Response: {
-            OrderedLines: {
+    (vars.serviceName): {
 				Error: {
 					ErrorNumber: 1,
 					ErrorDescription: "Internal Server Error" 
 				}
 		}
-	}
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
 			</on-error-propagate>
-		</error-handler>
+</error-handler>
     </flow>
     <flow name="EnterOrder_v5:\soapkit-config">
         <logger level="INFO" doc:name="Enter Order Flow Started" doc:id="08b15e73-a9e7-41e7-9428-cd1fb8e37c42" message="Enter Order Flow Started"/>
@@ -206,7 +203,6 @@ output application/xml
     </flow>
     <flow name="AdvanceShipNoticeGet_v2:\soapkit-config">
         <logger level="INFO" doc:name="Get Advance ShipNotice Flow Started" doc:id="26f21acd-b28a-4520-aa59-0cd44bd6f419" message="Get Advance ShipNotice Flow Started"/>
-		
 		<flow-ref doc:name="mf-get-advance-ship-notice-implementation" doc:id="ac703fa8-3d4f-4534-b92f-e1b678ced542" name="mf-get-advance-ship-notice-implementation"/>
 		<logger level="INFO" doc:name="Get Advance ShipNotice Flow Ended" doc:id="7f551f9a-7bed-44fd-a76c-e87eca066f42" message="Get Advance ShipNotice Flow Ended"/>
     </flow>

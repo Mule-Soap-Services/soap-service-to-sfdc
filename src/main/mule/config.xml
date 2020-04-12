@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core"
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
-	<global-property doc:name="Global Property" doc:id="8b525651-d562-44d7-a0ce-a72532b5471f" name="env" value="local" />
+	<global-property doc:name="Global Property" doc:id="8b525651-d562-44d7-a0ce-a72532b5471f" name="env" value="qa" />
+	<configuration-properties doc:name="Configuration Common properties" doc:id="bec9767c-6e2d-45bd-b5b6-39585e951ea0" file="config/config-common.properties" />
 	<configuration-properties doc:name="Configuration properties" doc:id="f3f0428f-3998-404c-ac6b-435bd9e0281d" file="config/config-${env}.properties" />
 	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="f4d49f8d-37c9-4947-acf7-6ec0c3a579ac" >
 		<salesforce:cached-basic-connection username="${sfdc.username}" password="${sfdc.password}" securityToken="${sfdc.securityToken}" url="${sfdc.url}" />
 	</salesforce:sfdc-config>
+	<http:listener-config name="api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="${http.private.port}"/>
+    </http:listener-config>
+    <http:request-config name="HTTP_Request_configuration_auth" doc:name="HTTP Request configuration" doc:id="ea920d2d-aa2b-4507-8a82-0c4034a11201" >
+		<http:request-connection host="#[p('authentication.host')]" port="#[p('authentication.port')]">
+		</http:request-connection>
+	</http:request-config>
+	
 
 </mule>

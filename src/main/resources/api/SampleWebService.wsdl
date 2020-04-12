@@ -3308,10 +3308,10 @@
   </wsdl:binding>
   <wsdl:service name="JenneWebService">
     <wsdl:port name="JenneWebServiceSoap" binding="tns:JenneWebServiceSoap">
-      <soap:address location="https://webservice.jenne.com/JenneWebService.asmx"/>
+      <soap:address location="http://localhost:8091"/>
     </wsdl:port>
     <wsdl:port name="JenneWebServiceSoap12" binding="tns:JenneWebServiceSoap12">
-      <soap12:address location="https://webservice.jenne.com/JenneWebService.asmx"/>
+      <soap12:address location="http://localhost:8091"/>
     </wsdl:port>
     <wsdl:port name="JenneWebServiceHttpGet" binding="tns:JenneWebServiceHttpGet">
       <http:address location="https://webservice.jenne.com/JenneWebService.asmx"/>

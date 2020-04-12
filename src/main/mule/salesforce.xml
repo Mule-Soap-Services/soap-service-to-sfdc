@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	
+	<sub-flow name="sf-sfdc-create" doc:id="afdb35bd-3a03-4039-93f9-0b954024c932" >
+		<logger level="INFO" doc:name="SFDC Upsert specified object : Begin" doc:id="9a668331-8d58-466d-b175-1714e1b6d99c" message="SFDC Upsert specified object : Begin"/>
+		<logger level="DEBUG" doc:name="SFDC Upsert specified object : Payload" doc:id="9654fe41-6d95-48c8-9307-a23d4e7c7b23" message="SFDC Upsert specified object : Payload = #[payload]" category='DEBUG'/>
+		<salesforce:create type="#[vars.sfdcObj.recordType]" doc:name="SFDC Create" doc:id="84df198f-9855-423b-854c-318c9de67dff" config-ref="Salesforce_Config" >
+			<salesforce:records ><![CDATA[#[output application/json --- payload]]]></salesforce:records>
+		</salesforce:create>
+		<logger level="DEBUG" doc:name="SFDC Upsert Response" doc:id="6df6f96a-2c16-4d61-bac6-d84fe64d6376" message="SFDC Upsert Response : = #[payload]" category="DEBUG"/>
+		<logger level="INFO" doc:name="SFDC Query against specified object : End" doc:id="2ef9d0c3-c775-4794-aec5-bb14d38e0b2e" message="SFDC Query against specified object : End , response size = #[sizeOf(payload)]"/>
+	</sub-flow>
+	
+</mule>

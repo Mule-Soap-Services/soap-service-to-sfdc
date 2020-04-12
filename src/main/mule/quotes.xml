@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="d9c5c402-64eb-44b3-b997-65b03649e53c" >
-		<http:request-connection host="#[p('authentication.host')]" port="#[p('authentication.port')]">
-		</http:request-connection>
-	</http:request-config>
-	<sub-flow name="sf-create-quotes" doc:id="70bb0960-3e9f-4947-9ecb-73995164afb6" >
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	
+	<sub-flow name="sf-sfdc-create-quote" doc:id="926c9a88-39b7-41b9-9abd-dbb628c780b0" >
+		<ee:transform doc:name="Create Quote" doc:id="5c2564a8-4a77-48af-b55b-0f72cef6c073" >
+			<ee:message >
+				<ee:set-payload resource="dwlScripts/quoteRequest.dwl" />
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dwlScripts/sfdc-quote-obj-properties.dwl" variableName="sfdcObj" />
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="Create Quote" doc:id="996f89d4-53e0-43a8-a378-923d3e2fd9bf" name="sf-sfdc-create"/>
+		<ee:transform doc:name="Create Quote Response" doc:id="69c47567-39e1-4b69-bf69-793853f92f00" >
+			<ee:message >
+				<ee:set-payload resource="dwlScripts/payloadToJson.dwl" />
+			
+</ee:message>
+		</ee:transform>
+	</sub-flow>
+	
+	<sub-flow name="sf-sfdc-create-quote-items" doc:id="37bdf0a2-020b-4942-9588-98aa62e824e7" >
+		<ee:transform doc:name="Create Quote Items" doc:id="736e2f97-feab-476a-bfdf-3bfd1663eedc" >
+			<ee:message >
+				<ee:set-payload resource="dwlScripts/quoteItemsRequest.dwl" />
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dwlScripts/sfdc-quote-items-obj-properties.dwl" variableName="sfdcObj" />
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="Create Quote Items" doc:id="94d72259-b8b3-4b06-ba9c-b82ed617e078" name="sf-sfdc-create"/>
+		<ee:transform doc:name="Create Order Response" doc:id="d9d91324-8ca2-410a-b77e-03915ec9125a" >
+			<ee:message >
+				<ee:set-payload resource="dwlScripts/payloadToJson.dwl" />
+			
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	
+	<sub-flow name="pf-create-quotes" doc:id="70bb0960-3e9f-4947-9ecb-73995164afb6" >
 		<ee:transform doc:name="DW SET quotes request" doc:id="8bc49fae-3ae7-4242-a28b-759d7b810250" >
 			<ee:message >
 			</ee:message>
@@ -21,51 +55,47 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<salesforce:upsert doc:name="SF Upsert quote" doc:id="75474640-7fb0-49b5-bd84-bb167ac8bef9" config-ref="Salesforce_Config" externalIdFieldName="Id" target="quoteResponse" type="Quote">
 			<salesforce:records ><![CDATA[#[[vars.quoteRequest]]]]></salesforce:records>
 		</salesforce:upsert>
-		<choice doc:name="Choice" doc:id="d33cdd9e-a4bd-4f7f-b9b1-0598abad3739" >
-			<when expression="vars.quoteResponse[0].success ~= true">
-				<ee:transform doc:name="DW SET quoteItems request" doc:id="8aa1eb40-2c88-4e4c-908d-84f97b48ddc7">
-			<ee:message>
-						<ee:set-payload resource="dwlScripts/quoteItemsRequest.dwl" />
+		<ee:transform doc:name="DW SET quoteItems request" doc:id="8aa1eb40-2c88-4e4c-908d-84f97b48ddc7" >
+			<ee:message >
 			</ee:message>
-			<ee:variables>
+			<ee:variables >
+				<ee:set-variable resource="dwlScripts/quoteItemsRequest.dwl" variableName="quoteItemsRequest" />
 			</ee:variables>
 		</ee:transform>
-				<salesforce:upsert doc:name="SF Upsert quote Items" doc:id="889aaf92-5c64-4d1d-9064-28dd1246e948" config-ref="Salesforce_Config" externalIdFieldName="Id" type="QuoteLineItem">
+		<salesforce:upsert doc:name="SF Upsert quote Items" doc:id="889aaf92-5c64-4d1d-9064-28dd1246e948" config-ref="Salesforce_Config" externalIdFieldName="Id" type="QuoteLineItem">
+			<salesforce:records ><![CDATA[#[vars.quoteItemsRequest]]]></salesforce:records>
 		</salesforce:upsert>
-				<logger level="INFO" doc:name="Payload logger" doc:id="828e9eba-1302-4563-affa-5ec33c6d7234" message="#[output application/json --- payload]"/>
-			</when>
-			<otherwise >
-				<ee:transform doc:name="Set SFDC Delete Record Payload" doc:id="a1ef46c1-c994-4b56-ad55-0c906d0b4b94">
-						<ee:message>
-							<ee:set-payload><![CDATA[%dw 2.0
-output application/java
----
-vars.opportunityResponse[0].id]]></ee:set-payload>
-						</ee:message>
-						<ee:variables>
-							<ee:set-variable variableName="errorResponse"><![CDATA[%dw 2.0
-output application/java
----
-{
-	errorNumber: 1,
-	errorMessage: "Create Quote Operation Failed"
-}]]></ee:set-variable>
-						</ee:variables>
-					</ee:transform>
-				<flow-ref doc:name="pf-sfdc-delete-record-flow" doc:id="5cab3f78-2500-46b8-a648-967fa3dfc060" name="pf-sfdc-delete-record-flow" target="OpportunityRecordDelete"/>
-			</otherwise>
-		</choice>
 	</sub-flow>
-	<flow name="pf-basic-auth-flow" doc:id="a631b1c8-4c81-49ea-9e14-69cf012b8d2b" >
-		<logger level="INFO" doc:name="pf-basic-auth-flow started" doc:id="2260ad6e-8906-426a-88cf-73f83ebf3bb1" message="pf-basic-auth-flow started"/>
-		<http:request method="GET" doc:name="Basic Auth Rest Api Call" doc:id="f534333d-4ab6-4032-9a0c-d1b67f0a031e" config-ref="HTTP_Request_configuration" path="/auth">
-			<http:headers ><![CDATA[#[output application/java
----
-{
-	"client_secret" : vars.authenticationPayload.password,
-	"client_id" : vars.authenticationPayload.email
-}]]]></http:headers>
-		</http:request>
-		<logger level="INFO" doc:name="pf-basic-auth-flow ended" doc:id="1e5a5315-4eca-4693-80f4-2db3a7740700" message="pf-basic-auth-flow ended"/>
-	</flow>
+	<sub-flow name="sf-query-quotes" doc:id="6fced550-830e-4c35-85e6-8d81dd51583a" >
+		<salesforce:query doc:name="SF Query quote" doc:id="188b9b32-4bc0-4d97-b7f1-2bca694766d0" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query >#[p('sfdc.create.quote.query') ++ vars.quoteResponse[0].id ++ &quot;'&quot;]</salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="DW SET quote response" doc:id="07785f93-5836-4bf7-b151-080eca54fd3b" >
+			<ee:message >
+				<ee:set-payload resource="dwlScripts/quoteResponse.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	
+	<sub-flow name="pf-sfdc-query-quote-by-quotenumber" doc:id="1a2f1f23-2a34-4e70-8340-607a1ec0a993" >
+		<logger level="INFO" doc:name="pf-sfdc-query-quote-by-quotenumber flow started" doc:id="821ffe49-74aa-496b-97e8-084c55de3484" message="pf-sfdc-query-quote-by-quotenumber flow started"/>
+		<ee:transform doc:name="Query" doc:id="ebb2ec10-6ddc-4b93-a47b-6585ca3a9e51" >
+			<ee:message >
+				<ee:set-payload resource="dwlScripts/queryQuoteByNumberRequest.dwl" />
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="pf-sfdc-query" doc:id="2c44c032-bc73-4b60-a061-bfb2d3eea022" name="pf-sfdc-query"/>
+		<logger level="INFO" doc:name="pf-sfdc-query-quote-by-quotenumber flow ended" doc:id="ff1c0f7e-c6f8-4ab3-bb4f-66f3cb9d1205" message="pf-sfdc-query-quote-by-quotenumber flow ended"/>
+	</sub-flow>
+	
+	<sub-flow name="pf-sfdc-query-quote-by-id" doc:id="7d64107e-b97f-4b99-9766-591bb937b22b" >
+		<logger level="INFO" doc:name="pf-sfdc-query-quote-by-id flow started" doc:id="2ceb5fec-bd3f-4302-85da-cd6ddfbefb30" message="pf-sfdc-query-quote-by-id flow started"/>
+		<ee:transform doc:name="Query" doc:id="a8930ca6-ac94-4bc5-89da-6a33fb12ab3e" >
+			<ee:message >
+				<ee:set-payload resource="dwlScripts/queryQuoteByIdRequest.dwl" />
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="pf-sfdc-query" doc:id="d710f285-ee04-419b-a7c2-d608c8e30506" name="pf-sfdc-query"/>
+		<logger level="INFO" doc:name="pf-sfdc-query-quote-by-quotenumber flow ended" doc:id="e1abdec1-7a78-4bef-b0a0-3878a0f4e91d" message="pf-sfdc-query-quote-by-quotenumber flow ended"/>
+	</sub-flow>
 </mule>
